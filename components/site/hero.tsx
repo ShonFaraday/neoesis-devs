@@ -2,7 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import MovingGrid, { heroItemVariants } from "@/components/ui/hyper-grid";
-import { LogoMark } from "./logo";
+import { AnimatedLogo } from "./animated-logo";
 import { WhatsAppIcon } from "./whatsapp-icon";
 import { whatsappLink } from "@/lib/site-config";
 
@@ -30,8 +30,7 @@ export function Hero() {
             <motion.div variants={heroItemVariants} className="flex flex-col items-center">
               <div className="nx-hero-logo-wrap">
                 <div className="nx-hero-logo-halo" aria-hidden="true" />
-                <div className="nx-hero-logo-ring" aria-hidden="true" />
-                <LogoMark gradientId="nx-grad-hero" className="nx-hero-logo" />
+                <AnimatedLogo />
               </div>
 
               <div className="mt-10 mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1)] backdrop-blur-md">
@@ -44,8 +43,12 @@ export function Hero() {
                 </span>
               </div>
 
-              <h1 className="bg-gradient-to-b from-white via-[#e6dcff] to-[#9d74ff] bg-clip-text pb-2 text-5xl font-bold tracking-tighter text-transparent drop-shadow-2xl sm:text-7xl lg:text-8xl">
-                Neoesis DEVS<sup className="text-[0.35em] text-[#c9b3ff]">®</sup>
+              <h1 className="pb-2 text-5xl font-semibold tracking-tighter drop-shadow-2xl sm:text-7xl lg:text-8xl">
+                <span className="bg-gradient-to-b from-white to-[#d9ccff] bg-clip-text text-transparent">
+                  Neoesis
+                </span>{" "}
+                <span className="nx-gradient-text">DEVS</span>
+                <sup className="text-[0.3em] text-[#a8a1c4]">®</sup>
               </h1>
             </motion.div>
 
