@@ -72,6 +72,18 @@
     top: 0;
     z-index: 50;
     padding-top: 18px;
+    /* Permite que el inicio (cuadrícula) quede detrás del menú */
+    margin-bottom: -80px;
+    /* Oculto en el inicio; aparece al bajar (clase is-visible) */
+    opacity: 0;
+    transform: translateY(-130%);
+    transition: transform 0.35s ease, opacity 0.35s ease;
+  }
+
+  .nx-header.is-visible,
+  .nx-header:focus-within {
+    opacity: 1;
+    transform: none;
   }
 
   .nx-header-wrap {
@@ -666,6 +678,117 @@
   }
 }
 
+/* ---------- Inicio: logo iluminado ---------- */
+@property --nx-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@layer components {
+  .nx-hero-logo-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: clamp(96px, 14vw, 136px);
+    aspect-ratio: 1;
+  }
+
+  .nx-hero-logo {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 0 22px rgba(157, 116, 255, 0.65))
+      drop-shadow(0 0 60px rgba(224, 123, 255, 0.35));
+  }
+
+  /* Halo de luz que respira detrás del logo */
+  .nx-hero-logo-halo {
+    position: absolute;
+    z-index: 0;
+    width: 280%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle,
+      rgba(157, 116, 255, 0.5) 0%,
+      rgba(224, 123, 255, 0.2) 35%,
+      transparent 68%
+    );
+    filter: blur(18px);
+    animation: nx-halo 4.5s ease-in-out infinite;
+  }
+
+  /* Borde de luz que gira alrededor del logo */
+  .nx-hero-logo-ring {
+    position: absolute;
+    z-index: 1;
+    inset: -9px;
+    padding: 2px;
+    border-radius: 31%;
+    background: conic-gradient(
+      from var(--nx-angle),
+      transparent 0 45%,
+      #9d74ff 65%,
+      #e07bff 80%,
+      transparent 95%
+    );
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+    filter: drop-shadow(0 0 6px rgba(224, 123, 255, 0.8));
+    animation: nx-ring 5s linear infinite;
+  }
+
+  /* Orbes de fondo del inicio */
+  .nx-orb {
+    animation: nx-pulse-slow 8s ease-in-out infinite;
+  }
+
+  .nx-orb-delay {
+    animation-delay: 2s;
+  }
+}
+
+@keyframes nx-halo {
+  0%,
+  100% {
+    opacity: 0.7;
+    transform: scale(0.94);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+}
+
+@keyframes nx-ring {
+  to {
+    --nx-angle: 360deg;
+  }
+}
+
+@keyframes nx-pulse-slow {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes nx-shimmer {
+  from {
+    translate: -100% 0;
+  }
+  to {
+    translate: 100% 0;
+  }
+}
+
 /* ---------- Movimiento reducido ---------- */
 @media (prefers-reduced-motion: reduce) {
   html {
@@ -678,5 +801,15 @@
 
   .nx-carousel {
     scroll-behavior: auto;
+  }
+
+  .nx-hero-logo-halo,
+  .nx-hero-logo-ring,
+  .nx-orb {
+    animation: none;
+  }
+
+  .nx-header {
+    transition: none;
   }
 }

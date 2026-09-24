@@ -6,7 +6,7 @@ export const planes: PricingPlan[] = [
   {
     name: "ECO",
     monthlyPrice: 70,
-    yearlyPrice: 720,
+    yearlyPrice: 504,
     features: [
       "4 horas semanales de soporte",
       "Actualización de datos",
@@ -21,7 +21,7 @@ export const planes: PricingPlan[] = [
   {
     name: "PREMIUM",
     monthlyPrice: 140,
-    yearlyPrice: 1400,
+    yearlyPrice: 1008,
     features: [
       "6 horas semanales de soporte",
       "Todo lo incluido en el plan ECO",

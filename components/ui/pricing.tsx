@@ -119,7 +119,7 @@ export function Pricing({
             !isMonthly ? "text-foreground" : "text-muted-foreground"
           )}
         >
-          Anual <span className="text-primary">(ahorra hasta 17%)</span>
+          Anual <span className="text-primary">(ahorra 40%)</span>
         </Label>
       </div>
 
