@@ -1,20 +1,28 @@
 import { Logo } from "./logo";
 import { WhatsAppIcon } from "./whatsapp-icon";
+import { AboutVisual } from "./about-visual";
+import { MetodosPago } from "./metodos-pago";
 import { WHATSAPP_DISPLAY, whatsappLink } from "@/lib/site-config";
 
 export function QuienesSomos() {
   return (
     <section id="quienes-somos" className="nx-section nx-section-alt">
-      <div className="nx-wrap">
-        <div className="nx-section-head">
-          <h2>Quiénes somos</h2>
+      <div className="nx-wrap nx-about">
+        <div>
+          <div className="nx-section-head">
+            <h2>Quiénes somos</h2>
+          </div>
+          <p className="nx-lead">
+            Neoesis DEVS® nace de una idea simple: cualquier negocio, sin importar su tamaño,
+            merece una presencia en internet clara y bien pensada.
+          </p>
+          <p className="nx-lead">
+            Somos José Sanoja y Angel Figueroa, cofundadores y diseñadores de cada proyecto.
+            Diseñamos, construimos y publicamos cada página nosotros mismos, de principio a fin,
+            para que tú solo te preocupes de atender a los clientes que te escriban.
+          </p>
         </div>
-        <p className="nx-lead">
-          Neoesis DEVS® nace de una idea simple: cualquier negocio, sin importar su tamaño, merece
-          una presencia en internet clara y bien pensada. Diseñamos, construimos y publicamos cada
-          página nosotros mismos, de principio a fin, para que tú solo te preocupes de atender a
-          los clientes que te escriban.
-        </p>
+        <AboutVisual />
       </div>
     </section>
   );
@@ -35,6 +43,7 @@ export function CtaFinal() {
           <WhatsAppIcon />
           {WHATSAPP_DISPLAY}
         </a>
+        <MetodosPago centrado />
       </div>
     </section>
   );
@@ -44,15 +53,15 @@ const EQUIPO = [
   {
     iniciales: "JS",
     nombre: "José Sanoja",
-    rol: "Diseño & Desarrollo",
-    texto: "Cofundador de Neoesis DEVS®. Convierte ideas en páginas limpias, rápidas y fáciles de usar.",
+    rol: "Cofundador y diseñador",
+    texto: "Convierte ideas en páginas limpias, rápidas y fáciles de usar.",
     alt: false,
   },
   {
     iniciales: "AF",
-    nombre: "Ángel Figueroa",
-    rol: "Estrategia & Experiencia",
-    texto: "Cofundador de Neoesis DEVS®. Piensa cada página desde la mirada de quien la visita por primera vez.",
+    nombre: "Angel Figueroa",
+    rol: "Cofundador y diseñador",
+    texto: "Diseña cada página desde la mirada de quien la visita por primera vez.",
     alt: true,
   },
 ];

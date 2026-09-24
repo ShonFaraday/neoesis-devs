@@ -786,6 +786,331 @@
     }
   }
 
+  /* ---------- Fondo animado de la sección de planes ---------- */
+  .nx-planes-bg {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .nx-planes-bg-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* Aurora morada que se desplaza lentamente */
+  .nx-planes-bg-layer::before {
+    content: "";
+    position: absolute;
+    inset: -30%;
+    background:
+      radial-gradient(35% 40% at 30% 30%, rgba(124, 77, 255, 0.22), transparent 70%),
+      radial-gradient(30% 35% at 72% 60%, rgba(224, 123, 255, 0.14), transparent 70%),
+      radial-gradient(40% 40% at 50% 92%, rgba(91, 63, 214, 0.2), transparent 70%);
+    filter: blur(30px);
+    animation: nx-aurora 24s ease-in-out infinite alternate;
+  }
+
+  /* Malla de puntos que avanza en diagonal */
+  .nx-planes-bg-layer::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(196, 170, 255, 0.2) 1px, transparent 1.3px);
+    background-size: 28px 28px;
+    -webkit-mask-image: radial-gradient(ellipse at center, #000 25%, transparent 75%);
+    mask-image: radial-gradient(ellipse at center, #000 25%, transparent 75%);
+    animation: nx-dots 30s linear infinite;
+  }
+
+  /* ---------- Métodos de pago ---------- */
+  .nx-pay {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-top: 32px;
+    font-size: 0.9rem;
+    color: var(--nx-muted);
+  }
+
+  .nx-pay-center {
+    justify-content: center;
+  }
+
+  .nx-pay-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border: 1px solid var(--nx-border);
+    border-radius: 999px;
+    background: var(--nx-surface);
+    color: var(--nx-text);
+    font-weight: 500;
+  }
+
+  .nx-pay-pill svg {
+    width: 16px;
+    height: 16px;
+    color: var(--nx-violet);
+  }
+
+  /* ---------- Portafolio: variante cian ---------- */
+  .nx-tag-cyan {
+    background: rgba(56, 217, 245, 0.12);
+    color: #6be4f7;
+  }
+
+  .nx-work .nx-work-link {
+    color: #6be4f7;
+  }
+
+  .nx-work-soon {
+    opacity: 0.85;
+  }
+
+  /* ---------- Cómo trabajamos: pasos conectados ---------- */
+  .nx-flow {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 28px;
+  }
+
+  .nx-flow-step {
+    position: relative;
+  }
+
+  .nx-flow-step h3 {
+    margin-bottom: 0.4em;
+    font-size: 1.02rem;
+    font-weight: 600;
+    transition: text-shadow 0.4s ease;
+  }
+
+  .nx-flow-step p {
+    font-size: 0.92rem;
+    color: var(--nx-muted);
+  }
+
+  .nx-flow-node {
+    position: relative;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    margin-bottom: 16px;
+    border: 1px solid var(--nx-border);
+    border-radius: 50%;
+    background: var(--nx-surface-2);
+    color: var(--nx-violet);
+    font-weight: 600;
+    transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease,
+      border-color 0.3s ease;
+  }
+
+  /* Línea base (apagada) entre un paso y el siguiente */
+  .nx-flow-line {
+    position: absolute;
+    z-index: 1;
+    top: 19px;
+    left: 20px;
+    width: calc(100% + 28px);
+    height: 2px;
+    border-radius: 2px;
+    background: var(--nx-border);
+  }
+
+  /* Relleno de luz que se dibuja */
+  .nx-flow-line::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--nx-violet), var(--nx-orchid));
+    box-shadow: 0 0 10px rgba(224, 123, 255, 0.6);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s linear;
+  }
+
+  .nx-flow-step.line-lit .nx-flow-line::after {
+    transform: scaleX(1);
+    transition-delay: max(0s, calc((var(--i) - var(--base) - 1) * 0.25s));
+  }
+
+  /* Pulso de luz que viaja por la línea encendida */
+  .nx-flow-pulse {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    z-index: 1;
+    width: 6px;
+    height: 6px;
+    margin: -3px 0 0 -3px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 8px #fff, 0 0 16px var(--nx-orchid);
+    opacity: 0;
+  }
+
+  .nx-flow-step.line-lit .nx-flow-pulse {
+    animation: nx-flow-x 1.6s linear 0.6s infinite;
+  }
+
+  /* Punto encendido */
+  .nx-flow-step.node-lit .nx-flow-node {
+    border-color: transparent;
+    background: linear-gradient(135deg, var(--nx-violet), var(--nx-orchid));
+    color: var(--nx-ink);
+    box-shadow: 0 0 22px rgba(157, 116, 255, 0.55);
+    transition-delay: max(0s, calc((var(--i) - var(--base) - 1) * 0.25s));
+  }
+
+  /* Paso final: se ilumina en blanco */
+  .nx-flow-step.is-final.node-lit .nx-flow-node {
+    background: var(--nx-text);
+    box-shadow: 0 0 0 4px rgba(243, 240, 251, 0.12), 0 0 26px rgba(243, 240, 251, 0.85),
+      0 0 60px rgba(224, 123, 255, 0.5);
+  }
+
+  .nx-flow-step.is-final.node-lit .nx-flow-node::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: 50%;
+    background: rgba(243, 240, 251, 0.55);
+    animation: nx-flow-ring 2s ease-out infinite;
+  }
+
+  .nx-flow-step.is-final.node-lit h3 {
+    text-shadow: 0 0 18px rgba(243, 240, 251, 0.45);
+  }
+
+  @media (max-width: 760px) {
+    .nx-flow {
+      grid-template-columns: 1fr;
+    }
+
+    .nx-flow-step {
+      min-height: 40px;
+      padding-left: 60px;
+    }
+
+    .nx-flow-node {
+      position: absolute;
+      top: 0;
+      left: 0;
+      margin: 0;
+    }
+
+    .nx-flow-line {
+      top: 20px;
+      left: 19px;
+      width: 2px;
+      height: calc(100% + 28px);
+    }
+
+    .nx-flow-line::after {
+      transform: scaleY(0);
+      transform-origin: top;
+    }
+
+    .nx-flow-step.line-lit .nx-flow-line::after {
+      transform: scaleY(1);
+    }
+
+    .nx-flow-pulse {
+      top: 0;
+      left: 50%;
+      margin: -3px 0 0 -3px;
+    }
+
+    .nx-flow-step.line-lit .nx-flow-pulse {
+      animation-name: nx-flow-y;
+    }
+  }
+
+  /* ---------- Quiénes somos: logo vivo ---------- */
+  .nx-about {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    align-items: center;
+    gap: 48px;
+  }
+
+  .nx-about .nx-lead + .nx-lead {
+    margin-top: 1em;
+  }
+
+  .nx-about-visual {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    aspect-ratio: 1;
+    margin: 0 auto;
+  }
+
+  .nx-about-glow {
+    position: absolute;
+    inset: 12%;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle,
+      rgba(157, 116, 255, 0.35) 0%,
+      rgba(224, 123, 255, 0.12) 45%,
+      transparent 70%
+    );
+    filter: blur(20px);
+    animation: nx-halo 5s ease-in-out infinite;
+  }
+
+  .nx-about-svg {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  .nx-about-net {
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    filter: drop-shadow(0 0 10px rgba(157, 116, 255, 0.45));
+  }
+
+  .nx-about-visual.is-ready .nx-about-net {
+    opacity: 1;
+  }
+
+  .nx-orbit {
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  .nx-orbit-a {
+    animation: nx-spin 26s linear infinite;
+  }
+
+  .nx-orbit-b {
+    animation: nx-spin 18s linear infinite reverse;
+  }
+
+  @media (max-width: 860px) {
+    .nx-about {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+
+    .nx-about-visual {
+      max-width: 320px;
+    }
+  }
+
   /* ---------- Quiénes somos ---------- */
   .nx-lead {
     max-width: 720px;
@@ -1010,6 +1335,71 @@
   }
 }
 
+@keyframes nx-aurora {
+  0% {
+    transform: translate3d(-4%, -2%, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(3%, 4%, 0) rotate(8deg);
+  }
+  100% {
+    transform: translate3d(-2%, 5%, 0) rotate(-6deg);
+  }
+}
+
+@keyframes nx-dots {
+  to {
+    background-position: 28px 56px;
+  }
+}
+
+@keyframes nx-flow-x {
+  0% {
+    left: 0;
+    opacity: 0;
+  }
+  15%,
+  85% {
+    opacity: 1;
+  }
+  100% {
+    left: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes nx-flow-y {
+  0% {
+    top: 0;
+    opacity: 0;
+  }
+  15%,
+  85% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes nx-flow-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+@keyframes nx-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 @keyframes nx-ring {
   to {
     --nx-angle: 360deg;
@@ -1052,8 +1442,20 @@
   .nx-hero-logo-halo,
   .nx-hero-logo-ring,
   .nx-node-pulse,
-  .nx-orb {
-    animation: none;
+  .nx-orb,
+  .nx-planes-bg-layer::before,
+  .nx-planes-bg-layer::after,
+  .nx-about-glow,
+  .nx-orbit-a,
+  .nx-orbit-b,
+  .nx-flow-pulse,
+  .nx-flow-node::after {
+    animation: none !important;
+  }
+
+  .nx-flow-line::after,
+  .nx-flow-node {
+    transition: none !important;
   }
 
   .nx-header {

@@ -8,7 +8,7 @@ export const planes: PricingPlan[] = [
     monthlyPrice: 70,
     yearlyPrice: 504,
     features: [
-      "4 horas semanales de soporte",
+      "Hasta 4 horas de trabajo por semana, las 4 semanas del mes",
       "Actualización de datos",
       "Cambios de tono y color",
       "Atención a tus peticiones dentro del diseño actual",
@@ -23,7 +23,7 @@ export const planes: PricingPlan[] = [
     monthlyPrice: 140,
     yearlyPrice: 1008,
     features: [
-      "6 horas semanales de soporte",
+      "Hasta 6 horas de trabajo por semana, las 4 semanas del mes",
       "Todo lo incluido en el plan ECO",
       "Rediseño de tu página",
       "Nuevas secciones y funcionalidades",

@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
 import { GlowCard } from "@/components/ui/spotlight-card";
+import { MetodosPago } from "./metodos-pago";
 
 // Paquetes de diseño de páginas (pago único por el diseño).
 const PAQUETES = [
@@ -13,6 +14,7 @@ const PAQUETES = [
       "Botón directo a WhatsApp",
       "Se ve bien en cualquier pantalla",
       "Publicación incluida",
+      "Dominio incluido, según el costo del dominio que elijas",
     ],
     destacado: false,
   },
@@ -26,6 +28,7 @@ const PAQUETES = [
       "Estructura en varias secciones",
       "Detalles animados e interactivos",
       "Mantenimiento mensual opcional",
+      "Dominio incluido, según el costo del dominio que elijas",
     ],
     destacado: true,
   },
@@ -39,6 +42,7 @@ const PAQUETES = [
       "Base de datos propia",
       "Control de inventario y pedidos",
       "Pensado para negocios en crecimiento",
+      "Dominio incluido, según el costo del dominio que elijas",
     ],
     destacado: false,
   },
@@ -81,6 +85,8 @@ export function Paquetes() {
             </GlowCard>
           ))}
         </div>
+
+        <MetodosPago />
       </div>
     </section>
   );

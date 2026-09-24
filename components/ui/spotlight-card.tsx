@@ -13,6 +13,8 @@ const glowColorMap = {
   orange: { base: 30, spread: 200 },
   // Colores de la marca: pasa de violeta a orquídea según la posición del cursor
   violeta: { base: 255, spread: 40 },
+  // Tono cian/azul para el portafolio
+  cian: { base: 185, spread: 60 },
 };
 
 const sizeMap = {

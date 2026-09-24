@@ -20,14 +20,17 @@ export default function Home() {
       <main>
         <Hero />
         <Paquetes />
-        <div className="nx-section-alt">
-          <Pricing
-            plans={planes}
-            title="Planes de servicio y mantenimiento"
-            description={
-              "Mantén tu página siempre al día, con soporte directo por WhatsApp.\nElige el plan que mejor se adapte a tu negocio."
-            }
-          />
+        <div className="nx-section-alt nx-planes-bg">
+          <div className="nx-planes-bg-layer" aria-hidden="true" />
+          <div className="relative z-10">
+            <Pricing
+              plans={planes}
+              title="¿Ya adquiriste un sitio web con nosotros?"
+              description={
+                "¡Selecciona un plan de mantenimiento!\nMantén tu página siempre al día, con soporte directo por WhatsApp."
+              }
+            />
+          </div>
         </div>
         <Portafolio />
         <Proceso />
