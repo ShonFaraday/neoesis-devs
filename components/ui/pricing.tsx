@@ -76,7 +76,7 @@ export function Pricing({
           x: (rect.left + rect.width / 2) / window.innerWidth,
           y: (rect.top + rect.height / 2) / window.innerHeight,
         },
-        colors: ["#47e6b1", "#7c6fff", "#f2f3fa", "#25d366"],
+        colors: ["#9d74ff", "#e07bff", "#5b3fd6", "#f3f0fb"],
         ticks: 200,
         gravity: 1.2,
         decay: 0.94,
@@ -88,10 +88,10 @@ export function Pricing({
   };
 
   return (
-    <section id="planes" className="mx-auto max-w-6xl px-4 py-20">
+    <section id="planes" className="mx-auto max-w-[1120px] px-6 py-24">
       <div className="mb-12 space-y-4 text-center">
-        <h2 className="text-4xl font-bold tracking-tight sm:text-5xl">{title}</h2>
-        <p className="text-lg whitespace-pre-line text-muted-foreground">
+        <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">{title}</h2>
+        <p className="text-base whitespace-pre-line text-muted-foreground sm:text-lg">
           {description}
         </p>
       </div>

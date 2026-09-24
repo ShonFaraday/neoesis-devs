@@ -1,0 +1,682 @@
+/* =========================================================
+   Neoesis DEVS® — Tema morado oscuro
+   Estilos migrados de la versión HTML (Flux Studio)
+   ========================================================= */
+
+:root {
+  --nx-bg: #0c0915;
+  --nx-surface: #141024;
+  --nx-surface-2: #1b1530;
+  --nx-border: #2d2549;
+  --nx-text: #f3f0fb;
+  --nx-muted: #a8a1c4;
+  --nx-violet: #9d74ff;
+  --nx-orchid: #e07bff;
+  --nx-deep: #5b3fd6;
+  --nx-ink: #140b2b;
+  --nx-whatsapp: #25d366;
+  --nx-whatsapp-dark: #1fb856;
+  --nx-radius: 14px;
+
+  /* Tokens de shadcn/ui (los usa la sección de planes) */
+  --background: var(--nx-bg);
+  --foreground: var(--nx-text);
+  --card: var(--nx-surface);
+  --card-foreground: var(--nx-text);
+  --popover: var(--nx-surface);
+  --popover-foreground: var(--nx-text);
+  --primary: var(--nx-violet);
+  --primary-foreground: var(--nx-ink);
+  --secondary: var(--nx-surface-2);
+  --secondary-foreground: var(--nx-text);
+  --muted: var(--nx-surface-2);
+  --muted-foreground: var(--nx-muted);
+  --accent: var(--nx-surface-2);
+  --accent-foreground: var(--nx-text);
+  --border: var(--nx-border);
+  --input: var(--nx-border);
+  --ring: var(--nx-violet);
+  --radius: 0.875rem;
+
+  color-scheme: dark;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 96px;
+  }
+
+  body {
+    background: var(--nx-bg);
+    color: var(--nx-text);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: rgba(157, 116, 255, 0.35);
+  }
+}
+
+@layer components {
+  .nx-wrap {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ---------- Header ---------- */
+  .nx-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    padding-top: 18px;
+  }
+
+  .nx-header-wrap {
+    display: flex;
+    justify-content: center;
+  }
+
+  .nx-header-pill {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 1040px;
+    padding: 10px 12px 10px 14px;
+    background: rgba(20, 16, 36, 0.8);
+    border: 1px solid var(--nx-border);
+    border-radius: 999px;
+    backdrop-filter: blur(14px);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+  }
+
+  /* ---------- Logo ---------- */
+  .nx-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    flex: none;
+    font-weight: 600;
+    font-size: 1.02rem;
+    letter-spacing: -0.01em;
+    color: var(--nx-text);
+  }
+
+  .nx-logo-mark {
+    width: 32px;
+    height: 32px;
+    flex: none;
+    filter: drop-shadow(0 4px 14px rgba(157, 116, 255, 0.35));
+  }
+
+  .nx-logo-devs {
+    color: var(--nx-violet);
+  }
+
+  .nx-logo sup {
+    font-size: 0.55em;
+    margin-left: 1px;
+    color: var(--nx-muted);
+  }
+
+  /* ---------- Navegación ---------- */
+  .nx-nav {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    gap: 22px;
+  }
+
+  .nx-nav a {
+    position: relative;
+    padding-bottom: 4px;
+    font-size: 0.88rem;
+    color: var(--nx-muted);
+    transition: color 0.2s ease;
+  }
+
+  .nx-nav a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 2px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--nx-violet), var(--nx-orchid));
+    transition: width 0.25s ease;
+  }
+
+  .nx-nav a:hover,
+  .nx-nav a:focus-visible,
+  .nx-nav a.is-active {
+    color: var(--nx-text);
+  }
+
+  .nx-nav a:hover::after,
+  .nx-nav a:focus-visible::after,
+  .nx-nav a.is-active::after {
+    width: 100%;
+  }
+
+  /* ---------- Botones ---------- */
+  .nx-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 22px;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease,
+      border-color 0.15s ease, color 0.15s ease;
+  }
+
+  .nx-btn:focus-visible {
+    outline: 2px solid var(--nx-violet);
+    outline-offset: 3px;
+  }
+
+  .nx-btn .nx-ico {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+    flex: none;
+  }
+
+  .nx-btn-whatsapp {
+    background: var(--nx-whatsapp);
+    color: #06210f;
+  }
+
+  .nx-btn-whatsapp:hover {
+    background: var(--nx-whatsapp-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(37, 211, 102, 0.35);
+  }
+
+  .nx-btn-ghost {
+    background: transparent;
+    border-color: var(--nx-border);
+    color: var(--nx-text);
+  }
+
+  .nx-btn-ghost:hover {
+    border-color: var(--nx-violet);
+    color: var(--nx-violet);
+    transform: translateY(-2px);
+  }
+
+  .nx-btn-small {
+    padding: 9px 16px;
+    font-size: 0.85rem;
+  }
+
+  .nx-btn-lg {
+    padding: 16px 30px;
+    font-size: 1.05rem;
+  }
+
+  /* ---------- Hero ---------- */
+  .nx-hero {
+    position: relative;
+    overflow: hidden;
+    padding: 130px 0 110px;
+  }
+
+  .nx-hero-glow {
+    position: absolute;
+    inset: -20% -10% auto -10%;
+    height: 640px;
+    background:
+      radial-gradient(closest-side, rgba(157, 116, 255, 0.34), transparent 70%) 20% 30% / 55% 100% no-repeat,
+      radial-gradient(closest-side, rgba(224, 123, 255, 0.24), transparent 70%) 80% 20% / 55% 100% no-repeat,
+      radial-gradient(closest-side, rgba(91, 63, 214, 0.3), transparent 70%) 50% 90% / 60% 80% no-repeat;
+    filter: blur(40px);
+    animation: nx-drift 16s ease-in-out infinite alternate;
+    pointer-events: none;
+  }
+
+  .nx-hero-cursor-glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      420px circle at var(--mx, 50%) var(--my, 30%),
+      rgba(157, 116, 255, 0.18),
+      transparent 65%
+    );
+    pointer-events: none;
+  }
+
+  .nx-hero-inner {
+    position: relative;
+    max-width: 780px;
+  }
+
+  .nx-eyebrow {
+    margin-bottom: 18px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--nx-violet);
+  }
+
+  .nx-hero-title {
+    margin-bottom: 20px;
+    font-size: clamp(2.3rem, 5vw, 3.6rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+  }
+
+  .nx-hero-sub {
+    max-width: 560px;
+    font-size: 1.1rem;
+    color: var(--nx-muted);
+  }
+
+  .nx-hero-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin: 28px 0 16px;
+  }
+
+  .nx-hero-note {
+    font-size: 0.85rem;
+    color: var(--nx-muted);
+    opacity: 0.8;
+  }
+
+  /* ---------- Secciones ---------- */
+  .nx-section {
+    padding: 96px 0;
+  }
+
+  .nx-section-alt {
+    background: var(--nx-surface);
+  }
+
+  .nx-section-head {
+    max-width: 580px;
+    margin-bottom: 44px;
+  }
+
+  .nx-section-head h2 {
+    margin-bottom: 0.5em;
+    font-size: clamp(1.7rem, 3vw, 2.3rem);
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+
+  .nx-section-head p {
+    font-size: 1.05rem;
+    color: var(--nx-muted);
+  }
+
+  .nx-grid {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+
+  /* ---------- Tarjetas ---------- */
+  .nx-card {
+    position: relative;
+    padding: 28px 24px;
+    background: var(--nx-surface);
+    border: 1px solid var(--nx-border);
+    border-radius: var(--nx-radius);
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .nx-section-alt .nx-card {
+    background: var(--nx-surface-2);
+  }
+
+  .nx-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--nx-violet);
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.4);
+  }
+
+  .nx-card h3 {
+    margin-bottom: 0.5em;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--nx-text);
+  }
+
+  .nx-card p {
+    font-size: 0.95rem;
+    color: var(--nx-muted);
+  }
+
+  /* ---------- Paquetes de diseño ---------- */
+  .nx-card .nx-plan-price {
+    margin: 4px 0 2px;
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--nx-text);
+  }
+
+  .nx-card .nx-plan-price-note {
+    margin-bottom: 18px;
+    font-size: 0.8rem;
+  }
+
+  .nx-card .nx-plan-desc {
+    margin-bottom: 16px;
+  }
+
+  .nx-plan-highlight {
+    border-color: var(--nx-violet);
+    background: var(--nx-surface-2);
+  }
+
+  .nx-plan-highlight:hover {
+    box-shadow: 0 14px 38px rgba(157, 116, 255, 0.28);
+  }
+
+  .nx-badge {
+    position: absolute;
+    top: -12px;
+    right: 22px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: var(--nx-violet);
+    color: var(--nx-ink);
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  .nx-list li {
+    position: relative;
+    margin-bottom: 10px;
+    padding-left: 22px;
+    font-size: 0.92rem;
+    color: var(--nx-muted);
+  }
+
+  .nx-list li:last-child {
+    margin-bottom: 0;
+  }
+
+  .nx-list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    background: var(--nx-violet);
+  }
+
+  .nx-plan-highlight .nx-list li::before {
+    background: var(--nx-orchid);
+  }
+
+  /* ---------- Portafolio ---------- */
+  .nx-tag {
+    display: inline-block;
+    margin-bottom: 14px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(157, 116, 255, 0.14);
+    color: var(--nx-violet);
+    font-size: 0.78rem;
+    font-weight: 600;
+  }
+
+  .nx-tag-muted {
+    background: rgba(168, 161, 196, 0.12);
+    color: var(--nx-muted);
+  }
+
+  .nx-work-link {
+    display: inline-block;
+    margin-top: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--nx-violet);
+    transition: opacity 0.2s ease;
+  }
+
+  .nx-work-link:hover {
+    opacity: 0.75;
+  }
+
+  .nx-card-placeholder {
+    border-style: dashed;
+    opacity: 0.8;
+  }
+
+  .nx-card-placeholder:hover {
+    border-color: var(--nx-orchid);
+    opacity: 1;
+  }
+
+  /* ---------- Cómo trabajamos ---------- */
+  .nx-process {
+    display: grid;
+    gap: 24px;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+
+  .nx-process-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    margin-bottom: 14px;
+    border: 1px solid var(--nx-border);
+    border-radius: 50%;
+    font-weight: 600;
+    color: var(--nx-violet);
+  }
+
+  .nx-process h3 {
+    margin-bottom: 0.4em;
+    font-size: 1.02rem;
+    font-weight: 600;
+  }
+
+  .nx-process p {
+    font-size: 0.92rem;
+    color: var(--nx-muted);
+  }
+
+  /* ---------- Carrusel ---------- */
+  .nx-carousel-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .nx-carousel {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    padding: 6px 2px 20px;
+    scrollbar-width: none;
+  }
+
+  .nx-carousel::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nx-carousel .nx-card {
+    flex: 0 0 260px;
+    margin-right: 18px;
+    scroll-snap-align: start;
+    background: var(--nx-surface-2);
+  }
+
+  .nx-carousel .nx-card:hover {
+    border-color: var(--nx-orchid);
+  }
+
+  .nx-car-btn {
+    display: none;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--nx-border);
+    border-radius: 50%;
+    background: var(--nx-surface);
+    color: var(--nx-text);
+    font-size: 1.3rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+
+  .nx-car-btn:hover {
+    border-color: var(--nx-violet);
+    color: var(--nx-violet);
+  }
+
+  /* ---------- Quiénes somos ---------- */
+  .nx-lead {
+    max-width: 720px;
+    font-size: 1.1rem;
+    color: var(--nx-text);
+    opacity: 0.85;
+  }
+
+  /* ---------- Colaboradores ---------- */
+  .nx-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    margin-bottom: 18px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--nx-violet), var(--nx-deep));
+    color: var(--nx-text);
+    font-weight: 600;
+    transition: transform 0.2s ease;
+  }
+
+  .nx-avatar-alt {
+    background: linear-gradient(135deg, var(--nx-orchid), var(--nx-violet));
+    color: var(--nx-ink);
+  }
+
+  .nx-card:hover .nx-avatar {
+    transform: scale(1.08);
+  }
+
+  .nx-card .nx-role {
+    margin-bottom: 10px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--nx-violet);
+  }
+
+  .nx-card h3.nx-team-name {
+    margin-bottom: 2px;
+  }
+
+  /* ---------- CTA final ---------- */
+  .nx-cta {
+    padding: 96px 0 104px;
+    text-align: center;
+    border-top: 1px solid var(--nx-border);
+  }
+
+  .nx-cta h2 {
+    margin-bottom: 0.5em;
+    font-size: clamp(1.7rem, 3vw, 2.4rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  .nx-cta p {
+    max-width: 480px;
+    margin: 0 auto 28px;
+    color: var(--nx-muted);
+  }
+
+  /* ---------- Footer ---------- */
+  .nx-footer {
+    padding: 30px 0 40px;
+    border-top: 1px solid var(--nx-border);
+  }
+
+  .nx-footer-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px 20px;
+  }
+
+  .nx-footer-inner p {
+    font-size: 0.85rem;
+    color: var(--nx-muted);
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (min-width: 720px) {
+    .nx-car-btn {
+      display: flex;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .nx-nav {
+      display: none;
+    }
+
+    .nx-header-pill {
+      justify-content: space-between;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .nx-hero {
+      padding: 90px 0 70px;
+    }
+
+    .nx-section {
+      padding: 64px 0;
+    }
+  }
+}
+
+@keyframes nx-drift {
+  from {
+    transform: translate(0, 0) scale(1);
+  }
+  to {
+    transform: translate(-3%, 4%) scale(1.06);
+  }
+}
+
+/* ---------- Movimiento reducido ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .nx-hero-glow {
+    animation: none;
+  }
+
+  .nx-carousel {
+    scroll-behavior: auto;
+  }
+}
