@@ -651,6 +651,141 @@
     color: var(--nx-violet);
   }
 
+  /* ---------- Carrusel automático de tipos de negocio ---------- */
+  .nx-marquee {
+    overflow: hidden;
+    padding: 8px 0 12px;
+    /* Desvanece los bordes izquierdo y derecho */
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+
+  .nx-marquee-track {
+    display: flex;
+    touch-action: pan-y pinch-zoom;
+  }
+
+  .nx-slide {
+    position: relative;
+    flex: 0 0 auto;
+    width: 300px;
+    min-height: 210px;
+    margin-right: 16px;
+    padding: 26px 24px;
+    overflow: hidden;
+    border: 1px solid var(--nx-border);
+    border-radius: 18px;
+    background: var(--nx-surface);
+    cursor: grab;
+    user-select: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .nx-slide:active {
+    cursor: grabbing;
+  }
+
+  .nx-slide-wide {
+    width: 380px;
+  }
+
+  /* Luz interior que sigue al cursor */
+  .nx-slide::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      280px circle at var(--mx, 50%) var(--my, 50%),
+      rgba(157, 116, 255, 0.2),
+      transparent 60%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+
+  /* Borde que se ilumina alrededor del cursor */
+  .nx-slide::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 1.5px;
+    border-radius: inherit;
+    background: radial-gradient(
+      200px circle at var(--mx, 50%) var(--my, 50%),
+      rgba(224, 123, 255, 0.95),
+      rgba(157, 116, 255, 0.45) 40%,
+      transparent 70%
+    );
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+
+  .nx-slide:hover {
+    border-color: rgba(157, 116, 255, 0.35);
+    box-shadow: 0 18px 40px -18px rgba(157, 116, 255, 0.45);
+  }
+
+  .nx-slide:hover::before,
+  .nx-slide:hover::after {
+    opacity: 1;
+  }
+
+  .nx-slide > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .nx-slide-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    margin-bottom: 18px;
+    border-radius: 13px;
+    background: rgba(157, 116, 255, 0.14);
+    color: var(--nx-violet);
+    transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .nx-slide-icon svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .nx-slide:hover .nx-slide-icon {
+    background: linear-gradient(135deg, var(--nx-violet), var(--nx-orchid));
+    color: var(--nx-ink);
+    box-shadow: 0 0 24px rgba(224, 123, 255, 0.45);
+  }
+
+  .nx-slide h3 {
+    margin-bottom: 0.4em;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--nx-text);
+  }
+
+  .nx-slide p {
+    font-size: 0.95rem;
+    color: var(--nx-muted);
+  }
+
+  @media (max-width: 720px) {
+    .nx-slide {
+      width: 260px;
+    }
+
+    .nx-slide-wide {
+      width: 310px;
+    }
+  }
+
   /* ---------- Quiénes somos ---------- */
   .nx-lead {
     max-width: 720px;
