@@ -1,3 +1,6 @@
+import type { CSSProperties } from "react";
+import { GlowCard } from "@/components/ui/spotlight-card";
+
 // Paquetes de diseño de páginas (pago único por el diseño).
 const PAQUETES = [
   {
@@ -54,9 +57,16 @@ export function Paquetes() {
 
         <div className="nx-grid">
           {PAQUETES.map((p) => (
-            <article
+            <GlowCard
               key={p.nombre}
-              className={p.destacado ? "nx-card nx-plan-highlight" : "nx-card"}
+              customSize
+              glowColor="violeta"
+              className={p.destacado ? "nx-pack nx-pack-highlight" : "nx-pack"}
+              style={
+                p.destacado
+                  ? ({ "--backup-border": "rgba(157, 116, 255, 0.55)" } as CSSProperties)
+                  : undefined
+              }
             >
               {p.destacado && <div className="nx-badge">Premium</div>}
               <h3>{p.nombre}</h3>
@@ -68,7 +78,7 @@ export function Paquetes() {
                   <li key={item}>{item}</li>
                 ))}
               </ul>
-            </article>
+            </GlowCard>
           ))}
         </div>
       </div>
