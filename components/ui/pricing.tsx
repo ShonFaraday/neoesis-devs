@@ -3,7 +3,6 @@
 import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Check, Star } from "lucide-react";
-import confetti from "canvas-confetti";
 import NumberFlow from "@number-flow/react";
 
 import { buttonVariants } from "@/components/ui/button";
@@ -69,7 +68,8 @@ export function Pricing({
     setIsMonthly(!checked);
     if (checked && switchRef.current) {
       const rect = switchRef.current.getBoundingClientRect();
-      confetti({
+      // OPTIMIZACIÓN: la librería del confeti se descarga solo al activar el pago anual
+      import("canvas-confetti").then(({ default: confetti }) => confetti({
         particleCount: 50,
         spread: 60,
         origin: {
@@ -83,7 +83,7 @@ export function Pricing({
         startVelocity: 30,
         shapes: ["circle"],
         disableForReducedMotion: true,
-      });
+      }));
     }
   };
 

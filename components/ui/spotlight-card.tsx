@@ -23,6 +23,64 @@ const sizeMap = {
   lg: "w-80 h-96",
 };
 
+// ------------------------------------------------------------------
+// OPTIMIZACIÓN: un solo "escucha" del cursor para todas las tarjetas,
+// actualizado como máximo una vez por fotograma. Las coordenadas se
+// calculan relativas a cada tarjeta (antes se usaba background-attachment:
+// fixed, que obliga a repintar las tarjetas en cada scroll).
+// ------------------------------------------------------------------
+const cards = new Set<HTMLElement>();
+let pointer: { x: number; y: number } | null = null;
+let frame = 0;
+
+function paint() {
+  frame = 0;
+  if (!pointer) return;
+  const { x, y } = pointer;
+  const vh = window.innerHeight;
+  const xp = (x / window.innerWidth).toFixed(2);
+  const yp = (y / vh).toFixed(2);
+
+  // Primero se leen todas las posiciones y luego se escriben (evita recálculos extra)
+  const updates: [HTMLElement, number, number][] = [];
+  cards.forEach((card) => {
+    const rect = card.getBoundingClientRect();
+    if (rect.bottom < -400 || rect.top > vh + 400) return; // fuera de pantalla
+    updates.push([card, x - rect.left, y - rect.top]);
+  });
+  updates.forEach(([card, lx, ly]) => {
+    card.style.setProperty("--x", lx.toFixed(1));
+    card.style.setProperty("--y", ly.toFixed(1));
+    card.style.setProperty("--xp", xp);
+    card.style.setProperty("--yp", yp);
+  });
+}
+
+function schedule() {
+  if (!frame) frame = requestAnimationFrame(paint);
+}
+
+function onPointerMove(e: PointerEvent) {
+  pointer = { x: e.clientX, y: e.clientY };
+  schedule();
+}
+
+function register(card: HTMLElement) {
+  if (cards.size === 0) {
+    document.addEventListener("pointermove", onPointerMove, { passive: true });
+    window.addEventListener("scroll", schedule, { passive: true });
+  }
+  cards.add(card);
+  schedule();
+  return () => {
+    cards.delete(card);
+    if (cards.size === 0) {
+      document.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("scroll", schedule);
+    }
+  };
+}
+
 interface GlowCardProps {
   children: ReactNode;
   className?: string;
@@ -48,19 +106,10 @@ export function GlowCard({
 }: GlowCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
 
-  // Guarda la posición del cursor en variables CSS
   useEffect(() => {
-    const syncPointer = (e: PointerEvent) => {
-      const card = cardRef.current;
-      if (!card) return;
-      card.style.setProperty("--x", e.clientX.toFixed(2));
-      card.style.setProperty("--xp", (e.clientX / window.innerWidth).toFixed(2));
-      card.style.setProperty("--y", e.clientY.toFixed(2));
-      card.style.setProperty("--yp", (e.clientY / window.innerHeight).toFixed(2));
-    };
-
-    document.addEventListener("pointermove", syncPointer);
-    return () => document.removeEventListener("pointermove", syncPointer);
+    const card = cardRef.current;
+    if (!card) return;
+    return register(card);
   }, []);
 
   const { base, spread } = glowColorMap[glowColor];
@@ -79,14 +128,12 @@ export function GlowCard({
     "--hue": "calc(var(--base) + (var(--xp, 0) * var(--spread, 0)))",
     backgroundImage: `radial-gradient(
       var(--spotlight-size) var(--spotlight-size) at
-      calc(var(--x, 0) * 1px)
-      calc(var(--y, 0) * 1px),
+      calc(var(--x, -9999) * 1px)
+      calc(var(--y, -9999) * 1px),
       hsl(var(--hue, 210) calc(var(--saturation, 100) * 1%) calc(var(--lightness, 70) * 1%) / var(--bg-spot-opacity, 0.1)), transparent
     )`,
     backgroundColor: "var(--backdrop, transparent)",
-    backgroundSize: "calc(100% + (2 * var(--border-size))) calc(100% + (2 * var(--border-size)))",
-    backgroundPosition: "50% 50%",
-    backgroundAttachment: "fixed",
+    backgroundOrigin: "border-box",
     border: "var(--border-size) solid var(--backup-border)",
     position: "relative",
     ...(width !== undefined && { width: typeof width === "number" ? `${width}px` : width }),
@@ -96,7 +143,7 @@ export function GlowCard({
 
   const classes = [
     customSize ? "" : `${sizeMap[size]} aspect-[3/4]`,
-    "relative rounded-[14px] shadow-[0_1rem_2rem_-1rem_black] backdrop-blur-[5px]",
+    "relative rounded-[14px] shadow-[0_1rem_2rem_-1rem_black]",
     className,
   ]
     .filter(Boolean)

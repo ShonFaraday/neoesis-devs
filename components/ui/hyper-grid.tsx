@@ -9,7 +9,6 @@ import {
   useReducedMotion,
   useTransform,
   useSpring,
-  type Variants,
   type MotionValue,
 } from "framer-motion";
 
@@ -24,34 +23,9 @@ const PHYSICS = {
 // Textura de ruido en base64 (sin dependencias externas)
 const NOISE_TEXTURE = `data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E`;
 
-// Animación de entrada para el contenido (se puede usar desde afuera)
-export const heroItemVariants: Variants = {
-  hidden: { y: 40, opacity: 0, filter: "blur(10px)" },
-  visible: {
-    y: 0,
-    opacity: 1,
-    filter: "blur(0px)",
-    transition: { type: "spring", stiffness: 100, damping: 15 },
-  },
-};
-
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.2, delayChildren: 0.3 },
-  },
-};
-
-const gridIntroVariants: Variants = {
-  hidden: { scale: 0.01, opacity: 0, rotateZ: 45 },
-  visible: {
-    scale: 1,
-    opacity: 1,
-    rotateZ: 0,
-    transition: { duration: 1.8, ease: [0.16, 1, 0.3, 1] },
-  },
-};
+const WARP_MS = 2000;
+// Tiempo extra para que las capas del warp terminen de desvanecerse antes de quitarlas
+const WARP_FADE_MS = 700;
 
 export type WarpApi = {
   /** Activa el efecto "warp". Devuelve false si ya estaba activo. */
@@ -68,6 +42,8 @@ interface MovingGridProps {
   children?: React.ReactNode | ((api: WarpApi) => React.ReactNode);
 }
 
+// OPTIMIZACIÓN: la entrada (aparición del fondo y la cuadrícula) ahora es CSS
+// (clases nx-hero-fade y nx-grid-intro), así el inicio se ve sin esperar al JavaScript.
 const MovingGrid: React.FC<MovingGridProps> = ({
   gridSize = 100,
   scrollSpeed = 0.4,
@@ -75,10 +51,11 @@ const MovingGrid: React.FC<MovingGridProps> = ({
   className = "",
   children,
 }) => {
-  const [isMounted, setIsMounted] = useState(false);
   const [isWarping, setIsWarping] = useState(false);
+  const [warpLayers, setWarpLayers] = useState(false);
   const [size, setSize] = useState({ w: 1920, h: 1080 });
   const containerRef = useRef<HTMLDivElement>(null);
+  const inViewRef = useRef(true);
   const reduceMotion = useReducedMotion();
 
   // --- Valores de movimiento ---
@@ -107,11 +84,21 @@ const MovingGrid: React.FC<MovingGridProps> = ({
     mouseY.set(cy);
     prevMouseX.current = cx;
     prevMouseY.current = cy;
-    setIsMounted(true);
 
     window.addEventListener("resize", measure);
     return () => window.removeEventListener("resize", measure);
   }, [mouseX, mouseY]);
+
+  // OPTIMIZACIÓN: la cuadrícula deja de animarse cuando el inicio no está en pantalla
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      inViewRef.current = entry.isIntersecting;
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   // --- Física ---
   const warpSignal = useSpring(0, PHYSICS.warp);
@@ -150,7 +137,7 @@ const MovingGrid: React.FC<MovingGridProps> = ({
 
   // --- Bucle de animación ---
   useAnimationFrame((_, delta) => {
-    if (reduceMotion) return;
+    if (reduceMotion || !inViewRef.current) return;
     const safeDelta = Math.min(delta, 100);
 
     const normalizedVX = Math.max(-2, Math.min(2, sprungVelX.get() / 100));
@@ -186,11 +173,14 @@ const MovingGrid: React.FC<MovingGridProps> = ({
   const warp = () => {
     if (isWarping) return false;
     setIsWarping(true);
+    setWarpLayers(true);
     warpSignal.set(1);
     setTimeout(() => {
       warpSignal.set(0);
       setIsWarping(false);
-    }, 2000);
+      // OPTIMIZACIÓN: las capas del warp solo existen mientras se usan
+      setTimeout(() => setWarpLayers(false), WARP_FADE_MS);
+    }, WARP_MS);
     return true;
   };
 
@@ -200,13 +190,10 @@ const MovingGrid: React.FC<MovingGridProps> = ({
   const maskImage = useMotionTemplate`radial-gradient(${currentMaskRadius}px circle at ${lagX}px ${lagY}px, rgb(${maskIntensity},${maskIntensity},${maskIntensity}), transparent)`;
 
   return (
-    <motion.div
+    <div
       ref={containerRef}
       onMouseMove={handleMouseMove}
-      initial="hidden"
-      animate={isMounted ? "visible" : "hidden"}
-      variants={containerVariants}
-      className={`relative flex w-full flex-col items-center justify-center overflow-hidden bg-[#0c0915] font-sans perspective-distant ${className}`}
+      className={`nx-hero-fade relative flex w-full flex-col items-center justify-center overflow-hidden bg-[#0c0915] font-sans perspective-distant ${className}`}
     >
       {/* Ruido de fondo */}
       <div
@@ -214,60 +201,66 @@ const MovingGrid: React.FC<MovingGridProps> = ({
         style={{ backgroundImage: `url("${NOISE_TEXTURE}")`, backgroundRepeat: "repeat" }}
       />
 
-      {/* Orbes de luz morada */}
+      {/* Orbes de luz morada (degradados en lugar de desenfoque: mismo aspecto, mucho más livianos) */}
       <motion.div
         className="pointer-events-none absolute inset-0 opacity-60"
         style={{ filter: orbFilter }}
         aria-hidden="true"
       >
-        <div className="nx-orb absolute top-[-20%] left-[-10%] h-[70%] w-[70%] rounded-full bg-[#5b3fd6]/30 blur-[150px]" />
-        <div className="nx-orb nx-orb-delay absolute right-[-10%] bottom-[-20%] h-[70%] w-[70%] rounded-full bg-[#e07bff]/20 blur-[150px]" />
+        <div className="nx-orb nx-orb-violet absolute top-[-35%] left-[-25%] h-[100%] w-[100%]" />
+        <div className="nx-orb nx-orb-orchid nx-orb-delay absolute right-[-25%] bottom-[-35%] h-[100%] w-[100%]" />
       </motion.div>
 
-      {/* Cuadrícula 3D */}
-      <motion.div
-        className="pointer-events-none absolute inset-0 z-10 will-change-transform"
-        variants={gridIntroVariants}
-        style={{
-          rotateX: sprungRotateX,
-          rotateY: sprungRotateY,
-          transformOrigin: "center bottom",
-        }}
-        aria-hidden="true"
-      >
-        <GridLayer gridSize={animatedGridSize} x={gridX} y={gridY} strokeColor="rgba(255,255,255,0.03)" />
+      {/* Cuadrícula 3D (la entrada es CSS; la inclinación la maneja el mouse) */}
+      <div className="nx-grid-intro pointer-events-none absolute inset-0 z-10 perspective-distant" aria-hidden="true">
+        <motion.div
+          className="absolute inset-0 will-change-transform"
+          style={{
+            rotateX: sprungRotateX,
+            rotateY: sprungRotateY,
+            transformOrigin: "center bottom",
+          }}
+        >
+          <GridLayer gridSize={animatedGridSize} x={gridX} y={gridY} strokeColor="rgba(255,255,255,0.03)" />
 
-        <motion.div className="absolute inset-0" style={{ maskImage, WebkitMaskImage: maskImage }}>
-          <GridLayer
-            gridSize={animatedGridSize}
-            x={gridX}
-            y={gridY}
-            strokeColor="rgba(196,170,255,0.22)"
-            strokeWidth={1}
-          />
-          <motion.div style={{ opacity: warpSignal }}>
+          <motion.div className="absolute inset-0" style={{ maskImage, WebkitMaskImage: maskImage }}>
             <GridLayer
               gridSize={animatedGridSize}
               x={gridX}
               y={gridY}
-              strokeColor="rgba(224,123,255,0.85)"
-              strokeWidth={2}
+              strokeColor="rgba(196,170,255,0.22)"
+              strokeWidth={1}
             />
+            {warpLayers && (
+              <motion.div style={{ opacity: warpSignal }}>
+                <GridLayer
+                  gridSize={animatedGridSize}
+                  x={gridX}
+                  y={gridY}
+                  strokeColor="rgba(224,123,255,0.85)"
+                  strokeWidth={2}
+                />
+              </motion.div>
+            )}
           </motion.div>
         </motion.div>
-      </motion.div>
+      </div>
 
-      {/* Destellos del warp */}
-      <motion.div
-        className="pointer-events-none absolute inset-0 z-30 bg-white mix-blend-overlay"
-        style={{ opacity: flashOpacity }}
-        aria-hidden="true"
-      />
-      <motion.div
-        className="pointer-events-none absolute inset-0 z-30 bg-[#7c4dff] mix-blend-color-dodge"
-        style={{ opacity: tintOpacity }}
-        aria-hidden="true"
-      />
+      {/* Destellos del warp (solo existen durante el efecto) */}
+      {warpLayers && (
+        <>
+          <motion.div
+            className="pointer-events-none absolute inset-0 z-30 bg-white mix-blend-overlay"
+            style={{ opacity: flashOpacity }}
+            aria-hidden="true"
+          />
+          <motion.div
+            className="pointer-events-none absolute inset-0 z-30 bg-[#7c4dff] mix-blend-color-dodge"
+            style={{ opacity: tintOpacity }}
+            aria-hidden="true"
+          />
+        </>
+      )}
 
       {/* Contenido */}
       <motion.div
@@ -276,7 +269,7 @@ const MovingGrid: React.FC<MovingGridProps> = ({
       >
         {typeof children === "function" ? children({ warp, isWarping }) : children}
       </motion.div>
-    </motion.div>
+    </div>
   );
 };
 

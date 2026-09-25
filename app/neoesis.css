@@ -475,7 +475,6 @@
     inset: calc(var(--border-size) * -1);
     border: var(--border-size) solid transparent;
     border-radius: calc(var(--radius) * 1px);
-    background-attachment: fixed;
     background-size: calc(100% + (2 * var(--border-size))) calc(100% + (2 * var(--border-size)));
     background-repeat: no-repeat;
     background-position: 50% 50%;
@@ -809,7 +808,8 @@
       radial-gradient(35% 40% at 30% 30%, rgba(124, 77, 255, 0.22), transparent 70%),
       radial-gradient(30% 35% at 72% 60%, rgba(224, 123, 255, 0.14), transparent 70%),
       radial-gradient(40% 40% at 50% 92%, rgba(91, 63, 214, 0.2), transparent 70%);
-    filter: blur(30px);
+    /* OPTIMIZACIÓN: sin filter: blur (los degradados ya son suaves) */
+    will-change: transform;
     animation: nx-aurora 24s ease-in-out infinite alternate;
   }
 
@@ -1816,9 +1816,41 @@
     animation: nx-ring 5s linear infinite;
   }
 
-  /* Orbes de fondo del inicio */
+  /* Orbes de fondo del inicio (degradados en lugar de blur de 150px) */
   .nx-orb {
     animation: nx-pulse-slow 8s ease-in-out infinite;
+  }
+
+  .nx-orb-violet {
+    background: radial-gradient(
+      closest-side,
+      rgba(91, 63, 214, 0.3) 40%,
+      rgba(91, 63, 214, 0.12) 70%,
+      transparent 100%
+    );
+  }
+
+  .nx-orb-orchid {
+    background: radial-gradient(
+      closest-side,
+      rgba(224, 123, 255, 0.2) 40%,
+      rgba(224, 123, 255, 0.08) 70%,
+      transparent 100%
+    );
+  }
+
+  /* Entrada del inicio con CSS: se ve sin esperar al JavaScript */
+  .nx-hero-fade {
+    animation: nx-fade-in 0.6s ease both;
+  }
+
+  .nx-grid-intro {
+    transform-origin: center bottom;
+    animation: nx-grid-intro 1.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+  }
+
+  .nx-rise {
+    animation: nx-rise 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) var(--d, 0s) both;
   }
 
   .nx-orb-delay {
@@ -1914,6 +1946,39 @@
   }
 }
 
+@keyframes nx-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes nx-grid-intro {
+  from {
+    opacity: 0;
+    transform: scale(0.01) rotate(45deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes nx-rise {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+    filter: blur(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+}
+
 @keyframes nx-wa-ping {
   0% {
     transform: scale(1);
@@ -1997,6 +2062,9 @@
   .nx-flow-pulse,
   .nx-flow-node::after,
   .nx-wa-float::before,
+  .nx-hero-fade,
+  .nx-grid-intro,
+  .nx-rise,
   .nx-404-spark,
   .nx-404-lost {
     animation: none !important;

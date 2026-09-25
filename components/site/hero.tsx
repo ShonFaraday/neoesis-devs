@@ -1,7 +1,8 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import MovingGrid, { heroItemVariants } from "@/components/ui/hyper-grid";
+import type { CSSProperties } from "react";
+import MovingGrid from "@/components/ui/hyper-grid";
 import { AnimatedLogo } from "./animated-logo";
 import { WhatsAppIcon } from "./whatsapp-icon";
 import { whatsappLink } from "@/lib/site-config";
@@ -27,7 +28,7 @@ export function Hero() {
         {({ warp, isWarping }) => (
           <>
             {/* Logo con iluminación */}
-            <motion.div variants={heroItemVariants} className="flex flex-col items-center">
+            <div className="nx-rise flex flex-col items-center" style={{ "--d": "0.5s" } as CSSProperties}>
               <div className="nx-hero-logo-wrap">
                 <div className="nx-hero-logo-halo" aria-hidden="true" />
                 <AnimatedLogo />
@@ -50,19 +51,19 @@ export function Hero() {
                 <span className="nx-gradient-text">DEVS</span>
                 <sup className="text-[0.3em] text-[#a8a1c4]">®</sup>
               </h1>
-            </motion.div>
+            </div>
 
-            <motion.p
-              variants={heroItemVariants}
-              className="mx-auto max-w-2xl text-lg leading-relaxed text-[#a8a1c4] md:text-xl"
+            <p
+              className="nx-rise mx-auto max-w-2xl text-lg leading-relaxed text-[#a8a1c4] md:text-xl"
+              style={{ "--d": "0.7s" } as CSSProperties}
             >
               Diseñamos y publicamos páginas web rápidas y claras, hechas para que quien las visita
               entienda tu negocio en segundos y te escriba directo por WhatsApp.
-            </motion.p>
+            </p>
 
-            <motion.div
-              variants={heroItemVariants}
-              className="flex flex-wrap items-center justify-center gap-4 pt-6"
+            <div
+              className="nx-rise flex flex-wrap items-center justify-center gap-4 pt-6"
+              style={{ "--d": "0.9s" } as CSSProperties}
             >
               {/* Botón principal con efecto warp */}
               <button
@@ -102,11 +103,11 @@ export function Hero() {
                 <WhatsAppIcon />
                 Escríbenos por WhatsApp
               </a>
-            </motion.div>
+            </div>
 
-            <motion.p variants={heroItemVariants} className="text-sm text-[#a8a1c4]/80">
+            <p className="nx-rise text-sm text-[#a8a1c4]/80" style={{ "--d": "1.1s" } as CSSProperties}>
               Esta misma página es un ejemplo de lo que podemos construir para ti.
-            </motion.p>
+            </p>
           </>
         )}
       </MovingGrid>
