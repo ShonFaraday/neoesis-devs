@@ -30,7 +30,6 @@ const WARP_FADE_MS = 700;
 export type WarpApi = {
   /** Activa el efecto "warp". Devuelve false si ya estaba activo. */
   warp: () => boolean;
-  isWarping: boolean;
 };
 
 interface MovingGridProps {
@@ -51,8 +50,9 @@ const MovingGrid: React.FC<MovingGridProps> = ({
   className = "",
   children,
 }) => {
-  const [isWarping, setIsWarping] = useState(false);
-  const [warpLayers, setWarpLayers] = useState(false);
+  // El warp se controla sin estados de React: así ningún re-render
+  // puede interrumpir la animación mientras ocurre.
+  const warpingRef = useRef(false);
   const [size, setSize] = useState({ w: 1920, h: 1080 });
   const containerRef = useRef<HTMLDivElement>(null);
   const inViewRef = useRef(true);
@@ -134,6 +134,8 @@ const MovingGrid: React.FC<MovingGridProps> = ({
   const orbFilter = useMotionTemplate`hue-rotate(${orbHue}deg) saturate(${orbSaturate})`;
   const flashOpacity = useTransform(warpSignal, [0, 0.1, 1], [0, 0.4, 0]);
   const tintOpacity = useTransform(warpSignal, [0, 0.2, 0.8], [0, 0.3, 0]);
+  // Las capas del warp siempre existen, pero no se dibujan mientras están apagadas
+  const warpVisibility = useTransform(warpSignal, (v) => (v > 0.002 ? "visible" : "hidden"));
 
   // --- Bucle de animación ---
   useAnimationFrame((_, delta) => {
@@ -171,15 +173,14 @@ const MovingGrid: React.FC<MovingGridProps> = ({
   };
 
   const warp = () => {
-    if (isWarping) return false;
-    setIsWarping(true);
-    setWarpLayers(true);
+    if (warpingRef.current) return false;
+    warpingRef.current = true;
     warpSignal.set(1);
-    setTimeout(() => {
+    window.setTimeout(() => {
       warpSignal.set(0);
-      setIsWarping(false);
-      // OPTIMIZACIÓN: las capas del warp solo existen mientras se usan
-      setTimeout(() => setWarpLayers(false), WARP_FADE_MS);
+      window.setTimeout(() => {
+        warpingRef.current = false;
+      }, WARP_FADE_MS);
     }, WARP_MS);
     return true;
   };
@@ -231,43 +232,37 @@ const MovingGrid: React.FC<MovingGridProps> = ({
               strokeColor="rgba(196,170,255,0.22)"
               strokeWidth={1}
             />
-            {warpLayers && (
-              <motion.div style={{ opacity: warpSignal }}>
-                <GridLayer
-                  gridSize={animatedGridSize}
-                  x={gridX}
-                  y={gridY}
-                  strokeColor="rgba(224,123,255,0.85)"
-                  strokeWidth={2}
-                />
-              </motion.div>
-            )}
+            <motion.div style={{ opacity: warpSignal, visibility: warpVisibility }}>
+              <GridLayer
+                gridSize={animatedGridSize}
+                x={gridX}
+                y={gridY}
+                strokeColor="rgba(224,123,255,0.85)"
+                strokeWidth={2}
+              />
+            </motion.div>
           </motion.div>
         </motion.div>
       </div>
 
-      {/* Destellos del warp (solo existen durante el efecto) */}
-      {warpLayers && (
-        <>
-          <motion.div
-            className="pointer-events-none absolute inset-0 z-30 bg-white mix-blend-overlay"
-            style={{ opacity: flashOpacity }}
-            aria-hidden="true"
-          />
-          <motion.div
-            className="pointer-events-none absolute inset-0 z-30 bg-[#7c4dff] mix-blend-color-dodge"
-            style={{ opacity: tintOpacity }}
-            aria-hidden="true"
-          />
-        </>
-      )}
+      {/* Destellos del warp (no se dibujan mientras están apagados) */}
+      <motion.div
+        className="pointer-events-none absolute inset-0 z-30 bg-white mix-blend-overlay"
+        style={{ opacity: flashOpacity, visibility: warpVisibility }}
+        aria-hidden="true"
+      />
+      <motion.div
+        className="pointer-events-none absolute inset-0 z-30 bg-[#7c4dff] mix-blend-color-dodge"
+        style={{ opacity: tintOpacity, visibility: warpVisibility }}
+        aria-hidden="true"
+      />
 
       {/* Contenido */}
       <motion.div
         className="pointer-events-auto relative z-40 mx-auto max-w-5xl space-y-8 px-4 text-center"
         style={{ scale: contentScale }}
       >
-        {typeof children === "function" ? children({ warp, isWarping }) : children}
+        {typeof children === "function" ? children({ warp }) : children}
       </motion.div>
     </div>
   );

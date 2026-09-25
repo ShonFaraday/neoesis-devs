@@ -25,7 +25,7 @@ export function Hero() {
   return (
     <section id="inicio">
       <MovingGrid className="min-h-[100svh] py-24">
-        {({ warp, isWarping }) => (
+        {({ warp }) => (
           <>
             {/* Logo con iluminación */}
             <div className="nx-rise flex flex-col items-center" style={{ "--d": "0.5s" } as CSSProperties}>
@@ -69,7 +69,6 @@ export function Hero() {
               <button
                 type="button"
                 onClick={() => irAPaquetes(warp)}
-                disabled={isWarping}
                 className="group relative inline-flex items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#9d74ff]"
               >
                 <div className="absolute inset-0 scale-110 rounded-full bg-gradient-to-r from-[#7c4dff] to-[#e07bff] opacity-40 blur-2xl transition-opacity duration-500 group-hover:opacity-60" />
