@@ -2079,3 +2079,42 @@
     transition: none;
   }
 }
+
+/* ---------- Video de presentación (sección #demo) ---------- */
+.nx-demo .nx-demo-frame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 1px solid var(--nx-border);
+  border-radius: 22px;
+  background: var(--nx-bg);
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.45),
+    0 0 90px rgba(124, 77, 255, 0.18);
+  pointer-events: none; /* sin clics, toques ni menú del reproductor */
+  user-select: none;
+  -webkit-user-select: none;
+  isolation: isolate;
+}
+
+.nx-demo .nx-demo-video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Oculta cualquier control nativo que algún navegador intente mostrar */
+.nx-demo-video::-webkit-media-controls,
+.nx-demo-video::-webkit-media-controls-start-playback-button,
+.nx-demo-video::-webkit-media-controls-overlay-play-button,
+.nx-demo-video::-webkit-media-controls-panel {
+  display: none !important;
+  -webkit-appearance: none;
+}
+
+@media (max-width: 720px) {
+  .nx-demo .nx-demo-frame {
+    border-radius: 14px;
+  }
+}

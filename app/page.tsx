@@ -3,6 +3,7 @@ import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from "@/lib/seo";
 import { WHATSAPP_DISPLAY } from "@/lib/site-config";
 import { Header } from "@/components/site/header";
 import { Hero } from "@/components/site/hero";
+import { VideoDemo } from "@/components/site/video-demo";
 import { Paquetes } from "@/components/site/paquetes";
 import { Portafolio } from "@/components/site/portafolio";
 import { Proceso } from "@/components/site/proceso";
@@ -55,6 +56,7 @@ export default function Home() {
       <Header />
       <main>
         <Hero />
+        <VideoDemo />
         <Paquetes />
         <div className="nx-section-alt nx-planes-bg">
           <div className="nx-planes-bg-layer" aria-hidden="true" />
