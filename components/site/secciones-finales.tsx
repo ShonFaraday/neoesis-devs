@@ -1,4 +1,3 @@
-import { Logo } from "./logo";
 import { WhatsAppIcon } from "./whatsapp-icon";
 import { AboutVisual } from "./about-visual";
 import { MetodosPago } from "./metodos-pago";
@@ -89,18 +88,5 @@ export function Colaboradores() {
         </div>
       </div>
     </section>
-  );
-}
-
-export function Footer() {
-  return (
-    <footer className="nx-footer">
-      <div className="nx-wrap nx-footer-inner">
-        <span className="nx-logo">
-          <Logo gradientId="nx-grad-footer" />
-        </span>
-        <p>Lima, Perú. © {new Date().getFullYear()} Neoesis DEVS®</p>
-      </div>
-    </footer>
   );
 }

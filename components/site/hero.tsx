@@ -23,7 +23,7 @@ export function Hero() {
 
   return (
     <section id="inicio">
-      <MovingGrid className="h-[100svh] min-h-[640px]">
+      <MovingGrid className="min-h-[100svh] py-24">
         {({ warp, isWarping }) => (
           <>
             {/* Logo con iluminación */}

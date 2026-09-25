@@ -7,3 +7,13 @@ export const DEFAULT_WHATSAPP_MESSAGE = `Hola ${BRAND_NAME}, quiero una página 
 export function whatsappLink(message: string = DEFAULT_WHATSAPP_MESSAGE) {
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 }
+
+// Correo de contacto. Déjalo vacío ("") si aún no tienen uno:
+// las páginas legales mostrarán solo WhatsApp.
+export const CONTACT_EMAIL = "";
+
+export const FOUNDERS = "José Sanoja y Angel Figueroa";
+export const CITY = "Lima, Perú";
+
+// Fecha que se muestra en las páginas legales. Actualízala cuando cambies su contenido.
+export const LEGAL_UPDATED = "24 de septiembre de 2026";
