@@ -133,7 +133,6 @@ const MovingGrid: React.FC<MovingGridProps> = ({
   const orbSaturate = useTransform(warpSignal, [0, 1], [1, 1.5]);
   const orbFilter = useMotionTemplate`hue-rotate(${orbHue}deg) saturate(${orbSaturate})`;
   const flashOpacity = useTransform(warpSignal, [0, 0.1, 1], [0, 0.4, 0]);
-  const tintOpacity = useTransform(warpSignal, [0, 0.2, 0.8], [0, 0.3, 0]);
   // Las capas del warp siempre existen, pero no se dibujan mientras están apagadas
   const warpVisibility = useTransform(warpSignal, (v) => (v > 0.002 ? "visible" : "hidden"));
 
@@ -249,11 +248,6 @@ const MovingGrid: React.FC<MovingGridProps> = ({
       <motion.div
         className="pointer-events-none absolute inset-0 z-30 bg-white mix-blend-overlay"
         style={{ opacity: flashOpacity, visibility: warpVisibility }}
-        aria-hidden="true"
-      />
-      <motion.div
-        className="pointer-events-none absolute inset-0 z-30 bg-[#7c4dff] mix-blend-color-dodge"
-        style={{ opacity: tintOpacity, visibility: warpVisibility }}
         aria-hidden="true"
       />
 
