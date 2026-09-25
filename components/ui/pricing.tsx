@@ -14,9 +14,9 @@ import { BRAND_NAME, whatsappLink } from "@/lib/site-config";
 
 export interface PricingPlan {
   name: string;
-  /** Precio mensual en soles. null = plan a cotizar. */
+  /** Precio mensual en dólares (USD). null = plan a cotizar. */
   monthlyPrice: number | null;
-  /** Precio anual en soles. null = plan a cotizar. */
+  /** Precio anual en dólares (USD). null = plan a cotizar. */
   yearlyPrice: number | null;
   /** Texto que reemplaza al precio en planes a cotizar. */
   priceLabel?: string;
@@ -45,8 +45,8 @@ function buildWhatsappMessage(plan: PricingPlan, isMonthly: boolean) {
   }
 
   const modalidad = isMonthly
-    ? `pago mensual (S/ ${plan.monthlyPrice} al mes)`
-    : `pago anual (S/ ${plan.yearlyPrice} al año)`;
+    ? `pago mensual (US$ ${plan.monthlyPrice} al mes)`
+    : `pago anual (US$ ${plan.yearlyPrice} al año)`;
 
   return (
     `Hola ${BRAND_NAME}, me interesa contratar el plan ${plan.name} con ${modalidad}.\n\n` +
@@ -188,7 +188,7 @@ export function Pricing({
                       <span className="text-5xl font-bold tracking-tight text-foreground">
                         <NumberFlow
                           value={price}
-                          prefix="S/ "
+                          prefix="US$ "
                           locales="es-PE"
                           format={{ maximumFractionDigits: 0 }}
                           transformTiming={{ duration: 500, easing: "ease-out" }}
@@ -208,7 +208,7 @@ export function Pricing({
                     ? "Presupuesto según tu proyecto"
                     : isMonthly
                       ? "Facturación mensual"
-                      : `Pago anual: ahorras S/ ${ahorro}`}
+                      : `Pago anual: ahorras US$ ${ahorro}`}
                 </p>
 
                 <ul className="mt-5 flex flex-col gap-2">

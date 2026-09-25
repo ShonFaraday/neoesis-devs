@@ -37,10 +37,10 @@ export default function TerminosPage() {
       <p>Ofrecemos tres tipos de proyecto. Los precios publicados son referenciales:</p>
       <ul>
         <li>
-          <strong>Landing sencilla:</strong> desde S/ 500 hasta S/ 600, pago único por el diseño.
+          <strong>Landing sencilla:</strong> desde US$ 190 hasta US$ 230, pago único por el diseño.
         </li>
         <li>
-          <strong>Landing profesional:</strong> desde S/ 800, según lo que requiera cada negocio.
+          <strong>Landing profesional:</strong> desde US$ 310, según lo que requiera cada negocio.
         </li>
         <li>
           <strong>Sistemas a medida</strong> (facturación, tiendas online y desarrollos similares):
@@ -75,13 +75,13 @@ export default function TerminosPage() {
       </p>
       <ul>
         <li>
-          <strong>Plan ECO (S/ 70 al mes):</strong> hasta 4 horas de trabajo por semana, durante las 4
+          <strong>Plan ECO (US$ 27 al mes):</strong> hasta 4 horas de trabajo por semana, durante las 4
           semanas del mes. Incluye actualización de datos, cambios de tono y color, y atención a tus
           peticiones dentro del diseño actual. No incluye rediseño, cambios totales ni nuevas secciones
           o funciones que no sigan el formato de la página ya entregada.
         </li>
         <li>
-          <strong>Plan PREMIUM (S/ 140 al mes):</strong> hasta 6 horas de trabajo por semana, durante
+          <strong>Plan PREMIUM (US$ 54 al mes):</strong> hasta 6 horas de trabajo por semana, durante
           las 4 semanas del mes. Incluye todo lo del plan ECO, además del rediseño de la página y la
           incorporación de nuevas secciones y funciones. Los cambios de mayor complejidad pueden
           tener un costo adicional, que te informaremos antes de realizarlos.
@@ -99,8 +99,8 @@ export default function TerminosPage() {
 
       <h2>6. Pagos</h2>
       <p>
-        Todos los precios están expresados en soles (S/). Aceptamos pagos por Yape, Plin y
-        transferencia bancaria. Los servicios de terceros que requiera tu proyecto, como el registro
+        Todos los precios están expresados en dólares estadounidenses (US$). Puedes pagar en soles por
+        Yape, Plin o transferencia bancaria, al tipo de cambio del día. Los servicios de terceros que requiera tu proyecto, como el registro
         del dominio, se cobran según su costo, que te informamos por adelantado.
       </p>
 

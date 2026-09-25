@@ -28,8 +28,8 @@ const GRUPOS: { titulo: string; preguntas: Pregunta[] }[] = [
         p: "¿Cuánto cuesta una página web?",
         r: (
           <>
-            Tenemos tres tipos de proyecto: una <strong>landing sencilla</strong> desde S/ 500 hasta
-            S/ 600, una <strong>landing profesional</strong> desde S/ 800, y{" "}
+            Tenemos tres tipos de proyecto: una <strong>landing sencilla</strong> desde US$ 190 hasta
+            US$ 230, una <strong>landing profesional</strong> desde US$ 310, y{" "}
             <strong>sistemas a medida</strong> (facturación, tiendas online y similares) con precio
             a cotizar. El precio final lo verás en la cotización que te enviamos por escrito.
           </>
@@ -77,9 +77,9 @@ const GRUPOS: { titulo: string; preguntas: Pregunta[] }[] = [
         p: "¿Qué diferencia hay entre el plan ECO y el PREMIUM?",
         r: (
           <>
-            El <strong>plan ECO</strong> (S/ 70 al mes) incluye hasta 4 horas de trabajo por semana
+            El <strong>plan ECO</strong> (US$ 27 al mes) incluye hasta 4 horas de trabajo por semana
             para actualizar datos, cambiar tonos y colores y atender tus peticiones dentro del diseño
-            actual; no incluye rediseños ni secciones nuevas. El <strong>plan PREMIUM</strong> (S/ 140
+            actual; no incluye rediseños ni secciones nuevas. El <strong>plan PREMIUM</strong> (US$ 54
             al mes) incluye hasta 6 horas por semana, además del rediseño de la página y la
             incorporación de nuevas secciones y funciones.
           </>
@@ -96,7 +96,7 @@ const GRUPOS: { titulo: string; preguntas: Pregunta[] }[] = [
     preguntas: [
       {
         p: "¿Qué métodos de pago aceptan?",
-        r: "Aceptamos Yape, Plin y transferencia bancaria. Todos nuestros precios están en soles.",
+        r: "Nuestros precios están en dólares (USD). Puedes pagar en soles por Yape, Plin o transferencia bancaria, al tipo de cambio del día.",
       },
       {
         p: "¿Cómo los contacto?",

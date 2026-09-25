@@ -858,6 +858,12 @@
     color: var(--nx-violet);
   }
 
+  .nx-pay-note {
+    flex-basis: 100%;
+    font-size: 0.8rem;
+    opacity: 0.85;
+  }
+
   /* ---------- Portafolio: variante cian ---------- */
   .nx-tag-cyan {
     background: rgba(56, 217, 245, 0.12);

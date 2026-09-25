@@ -5,8 +5,8 @@ import type { PricingPlan } from "@/components/ui/pricing";
 export const planes: PricingPlan[] = [
   {
     name: "ECO",
-    monthlyPrice: 70,
-    yearlyPrice: 504,
+    monthlyPrice: 27,
+    yearlyPrice: 194,
     features: [
       "Hasta 4 horas de trabajo por semana, las 4 semanas del mes",
       "Actualización de datos",
@@ -20,8 +20,8 @@ export const planes: PricingPlan[] = [
   },
   {
     name: "PREMIUM",
-    monthlyPrice: 140,
-    yearlyPrice: 1008,
+    monthlyPrice: 54,
+    yearlyPrice: 389,
     features: [
       "Hasta 6 horas de trabajo por semana, las 4 semanas del mes",
       "Todo lo incluido en el plan ECO",

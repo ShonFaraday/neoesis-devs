@@ -20,6 +20,9 @@ export function MetodosPago({ centrado = false }: Props) {
           {nombre}
         </span>
       ))}
+      <span className="nx-pay-note">
+        Precios en dólares (USD). Puedes pagar en soles al tipo de cambio del día.
+      </span>
     </div>
   );
 }

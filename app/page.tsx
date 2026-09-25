@@ -37,8 +37,8 @@ const jsonLd = {
   telephone: WHATSAPP_DISPLAY.replace(/\s/g, ""),
   address: { "@type": "PostalAddress", addressLocality: "Lima", addressCountry: "PE" },
   areaServed: { "@type": "City", name: "Lima" },
-  priceRange: "S/ 500 - S/ 800+",
-  currenciesAccepted: "PEN",
+  priceRange: "US$ 190 - US$ 310+",
+  currenciesAccepted: "USD, PEN",
   paymentAccepted: "Yape, Plin, transferencia bancaria",
   founder: [
     { "@type": "Person", name: "José Sanoja" },

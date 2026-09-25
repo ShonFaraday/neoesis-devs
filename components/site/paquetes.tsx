@@ -6,7 +6,7 @@ import { MetodosPago } from "./metodos-pago";
 const PAQUETES = [
   {
     nombre: "Landing sencilla",
-    precio: "S/ 500 – 600",
+    precio: "US$ 190 – 230",
     nota: "Pago único por el diseño",
     descripcion: "Ideal para empezar con una presencia simple y directa en internet.",
     incluye: [
@@ -20,7 +20,7 @@ const PAQUETES = [
   },
   {
     nombre: "Landing profesional",
-    precio: "Desde S/ 800",
+    precio: "Desde US$ 310",
     nota: "Según lo que necesite tu negocio",
     descripcion: "Un diseño moderno, más completo y organizado.",
     incluye: [
