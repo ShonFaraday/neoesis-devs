@@ -16,4 +16,4 @@ export const SITE_DESCRIPTION =
 
 // Código de verificación de Google Search Console (método "Etiqueta HTML").
 // Pega aquí solo el valor de content="...", por ejemplo: "abc123XYZ".
-export const GOOGLE_SITE_VERIFICATION = "";
+export const GOOGLE_SITE_VERIFICATION = "H6FgnTvAR-00JxkDDKuEJoIyePIm39Omc5KpMhEGthU";
