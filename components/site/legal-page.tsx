@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { SiteTopBar } from "./top-bar";
+import { ScrollToTop } from "./scroll-to-top";
 import { Footer } from "./footer";
 import { LEGAL_UPDATED } from "@/lib/site-config";
 
@@ -15,6 +16,7 @@ type LegalPageProps = {
 export function LegalPage({ titulo, intro, mostrarFecha = true, children }: LegalPageProps) {
   return (
     <>
+    <ScrollToTop />
       <SiteTopBar />
 
       <main className="nx-legal">

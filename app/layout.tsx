@@ -40,7 +40,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="es" className={poppins.variable}>
+    <html lang="es" className={poppins.variable} data-scroll-behavior="smooth">
       <body className={poppins.className}>
         {children}
         <FloatingWhatsApp />
