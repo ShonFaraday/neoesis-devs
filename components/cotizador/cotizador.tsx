@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import { useCallback, useDeferredValue, useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import { useMediaQuery } from "@/hooks/use-media-query";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, CircleAlert, CircleCheck, Copy, Eye, Pencil, RotateCcw, Search, Send, X } from "lucide-react";
@@ -89,12 +90,34 @@ export function Cotizador() {
   const [enviado, setEnviado] = useState(false);
   const topRef = useRef<HTMLDivElement>(null);
 
-  // Guarda el avance en este navegador
+  // Guarda el avance en este navegador (con una pausa corta para no escribir en cada tecla)
   useEffect(() => {
-    try {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ r, paso }));
-    } catch {}
+    const guardar = () => {
+      try {
+        window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ r, paso }));
+      } catch {}
+    };
+    const t = window.setTimeout(guardar, 350);
+    window.addEventListener("pagehide", guardar);
+    return () => {
+      window.clearTimeout(t);
+      window.removeEventListener("pagehide", guardar);
+    };
   }, [r, paso]);
+
+  // La vista previa se actualiza con prioridad baja: escribir siempre se siente fluido.
+  const rPrevia = useDeferredValue(r);
+  const esEscritorio = useMediaQuery("(min-width: 1024px)");
+
+  // Acciones estables (no cambian entre renders) para que las casillas memorizadas no se redibujen.
+  const elegirRubro = useCallback((id: string) => {
+    setR((prev) => ({ ...prev, rubro: id, especificas: prev.rubro === id ? prev.especificas : {} }));
+    setError(null);
+  }, []);
+  const elegirEstilo = useCallback((id: string) => {
+    setR((prev) => ({ ...prev, estilo: prev.estilo === id ? "" : id }));
+    setError(null);
+  }, []);
 
   const pasos = useMemo(
     () => ORDEN.filter((p) => p !== "especificas" || preguntasDe(r.rubro).length > 0),
@@ -169,10 +192,12 @@ export function Cotizador() {
   // Color del resplandor de fondo según el estilo elegido
   const acento = ESTILOS.find((e) => e.id === r.estilo)?.tema.accent ?? "#9d74ff";
 
-  const reorganizar = () => {
-    const i = DISTRIBUCIONES.findIndex((d) => d.id === r.distribucion);
-    upd({ distribucion: DISTRIBUCIONES[(i + 1) % DISTRIBUCIONES.length].id });
-  };
+  const reorganizar = useCallback(() => {
+    setR((prev) => {
+      const i = DISTRIBUCIONES.findIndex((d) => d.id === prev.distribucion);
+      return { ...prev, distribucion: DISTRIBUCIONES[(i + 1) % DISTRIBUCIONES.length].id };
+    });
+  }, []);
 
   // ---------- Contenido de cada paso ----------
   const rubroInfo = buscarRubro(r.rubro);
@@ -257,11 +282,12 @@ export function Cotizador() {
                     {c.rubros.map((x) => (
                       <Chip
                         key={x.id}
+                        id={x.id}
                         label={x.label}
                         icon={x.icon}
                         multi={false}
                         selected={r.rubro === x.id}
-                        onToggle={() => upd({ rubro: x.id, especificas: r.rubro === x.id ? r.especificas : {} })}
+                        onToggle={elegirRubro}
                       />
                     ))}
                   </div>
@@ -275,6 +301,7 @@ export function Cotizador() {
               <p className="nx-cot-cat-title"><Pencil aria-hidden="true" /> ¿No está tu rubro?</p>
               <div className="nx-chips">
                 <Chip
+                  id={RUBRO_OTRO}
                   label="Otro"
                   icon={Pencil}
                   multi={false}
@@ -382,12 +409,13 @@ export function Cotizador() {
               {ESTILOS.map((e) => (
                 <Chip
                   key={e.id}
+                  id={e.id}
                   label={e.label}
                   desc={e.desc}
                   multi={false}
                   variant="card"
                   selected={r.estilo === e.id}
-                  onToggle={() => upd({ estilo: r.estilo === e.id ? "" : e.id })}
+                  onToggle={elegirEstilo}
                 >
                   <span
                     className="nx-estilo-muestra"
@@ -642,11 +670,13 @@ export function Cotizador() {
           </AnimatePresence>
         </div>
 
-        <aside className="nx-cot-aside" aria-label="Vista previa de tu página">
-          <div className="nx-cot-sticky">
-            <VistaPrevia r={r} onReorganizar={reorganizar} />
-          </div>
-        </aside>
+        {esEscritorio && (
+          <aside className="nx-cot-aside" aria-label="Vista previa de tu página">
+            <div className="nx-cot-sticky">
+              <VistaPrevia r={rPrevia} onReorganizar={reorganizar} />
+            </div>
+          </aside>
+        )}
       </div>
 
       <AnimatePresence>
@@ -669,7 +699,7 @@ export function Cotizador() {
               <button type="button" className="nx-cot-sheet-close" onClick={() => setPreviewAbierta(false)} aria-label="Cerrar vista previa">
                 <X />
               </button>
-              <VistaPrevia r={r} onReorganizar={reorganizar} />
+              <VistaPrevia r={rPrevia} onReorganizar={reorganizar} />
             </motion.div>
           </motion.div>
         )}

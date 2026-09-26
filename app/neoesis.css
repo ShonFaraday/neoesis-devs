@@ -2174,8 +2174,9 @@
     background:
       radial-gradient(600px circle at 25% 20%, color-mix(in srgb, var(--cot-accent) 26%, transparent), transparent 70%),
       radial-gradient(500px circle at 80% 10%, rgba(224, 123, 255, 0.12), transparent 70%);
-    transition: background 0.8s ease;
     animation: nx-drift 16s ease-in-out infinite alternate;
+    will-change: transform;
+    contain: strict;
   }
 
   .nx-cot-grid {
@@ -2226,8 +2227,7 @@
 
   .nx-cot-card {
     border-color: var(--nx-border);
-    background: color-mix(in srgb, var(--nx-surface) 88%, transparent);
-    backdrop-filter: blur(14px);
+    background: color-mix(in srgb, var(--nx-surface) 90%, transparent);
     box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
   }
 
@@ -2424,6 +2424,27 @@
   .nx-chip:hover {
     border-color: color-mix(in srgb, var(--nx-violet) 60%, var(--nx-border));
     transform: translateY(-1px);
+  }
+
+  .nx-chip:active {
+    transform: scale(0.96);
+    transition-duration: 0.08s;
+  }
+
+  .nx-chip.is-on .nx-chip-ico {
+    animation: nx-chip-wiggle 0.45s ease;
+  }
+
+  .nx-chip-check-in {
+    display: inline-flex;
+    opacity: 0;
+    transform: scale(0);
+    transition: transform 0.35s cubic-bezier(0.34, 1.8, 0.64, 1), opacity 0.2s ease;
+  }
+
+  .nx-chip.is-on .nx-chip-check-in {
+    opacity: 1;
+    transform: scale(1);
   }
 
   .nx-chip:focus-visible {
@@ -2898,8 +2919,7 @@
     z-index: 80;
     display: flex;
     align-items: flex-end;
-    background: rgba(5, 3, 12, 0.7);
-    backdrop-filter: blur(6px);
+    background: rgba(5, 3, 12, 0.8);
   }
 
   .nx-cot-sheet-in {
@@ -3074,6 +3094,7 @@
   }
 
   .nx-pv-screen {
+    contain: content;
     height: clamp(480px, calc(100vh - 300px), 860px);
     overflow-y: auto;
     scrollbar-width: none;
@@ -3165,8 +3186,7 @@
     gap: 10px;
     padding: 12px 20px;
     border-bottom: 1px solid color-mix(in srgb, var(--pv-muted) 16%, transparent);
-    background: color-mix(in srgb, var(--pv-bg) 86%, transparent);
-    backdrop-filter: blur(10px);
+    background: color-mix(in srgb, var(--pv-bg) 95%, transparent);
   }
 
   .pv-nav strong {
@@ -4093,6 +4113,21 @@
       max-height: none;
       overflow: visible;
     }
+  }
+}
+
+@keyframes nx-chip-wiggle {
+  0% { transform: rotate(0) scale(1); }
+  35% { transform: rotate(-12deg) scale(1.2); }
+  70% { transform: rotate(8deg) scale(1.1); }
+  100% { transform: rotate(0) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nx-cot-glow,
+  .pv-pin-ring,
+  .nx-chip.is-on .nx-chip-ico {
+    animation: none;
   }
 }
 

@@ -1,61 +1,54 @@
 "use client";
 
-import type { CSSProperties, ReactNode } from "react";
+import { memo, useCallback, useLayoutEffect, useRef, type CSSProperties, type ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Opcion } from "@/lib/cotizador";
 
 type ChipProps = {
+  id: string;
   label: string;
   icon?: LucideIcon;
   desc?: string;
   selected: boolean;
-  onToggle: () => void;
+  onToggle: (id: string) => void;
   multi?: boolean;
   variant?: "chip" | "card";
   style?: CSSProperties;
   children?: ReactNode;
 };
 
-// Casilla seleccionable con animación de marcado.
-export function Chip({ label, icon: Icon, desc, selected, onToggle, multi = true, variant = "chip", style, children }: ChipProps) {
+// Casilla seleccionable. Las animaciones son 100% CSS (más livianas que JS):
+// el ícono hace un pequeño giro y el check aparece con rebote al marcar.
+export const Chip = memo(function Chip({ id, label, icon: Icon, desc, selected, onToggle, multi = true, variant = "chip", style, children }: ChipProps) {
   return (
-    <motion.button
+    <button
       type="button"
       role={multi ? "checkbox" : "radio"}
       aria-checked={selected}
-      onClick={onToggle}
-      whileTap={{ scale: 0.96 }}
+      onClick={() => onToggle(id)}
       className={cn("nx-chip", variant === "card" && "nx-chip-card", selected && "is-on")}
       style={style}
     >
       {children}
       {Icon && (
-        <motion.span
-          className="nx-chip-ico"
-          animate={selected ? { rotate: [0, -12, 8, 0], scale: [1, 1.2, 1] } : { rotate: 0, scale: 1 }}
-          transition={{ duration: 0.45 }}
-        >
+        <span className="nx-chip-ico">
           <Icon aria-hidden="true" />
-        </motion.span>
+        </span>
       )}
       <span className="nx-chip-text">
         <span className="nx-chip-label">{label}</span>
         {desc && <span className="nx-chip-desc">{desc}</span>}
       </span>
       <span className="nx-chip-check" aria-hidden="true">
-        <motion.span
-          initial={false}
-          animate={{ scale: selected ? 1 : 0, opacity: selected ? 1 : 0 }}
-          transition={{ type: "spring", stiffness: 520, damping: 22 }}
-        >
+        <span className="nx-chip-check-in">
           <Check />
-        </motion.span>
+        </span>
       </span>
-    </motion.button>
+    </button>
   );
-}
+});
 
 type GrupoProps = {
   opciones: Opcion[];
@@ -69,30 +62,36 @@ type GrupoProps = {
 
 export function GrupoOpciones(props: GrupoProps) {
   const { opciones, label, className, variant } = props;
+  // Guarda la versión más reciente de las props para que el onToggle sea
+  // estable y memo evite re-renderizar las casillas que no cambian.
+  const ultimo = useRef(props);
+  useLayoutEffect(() => {
+    ultimo.current = props;
+  });
+  const toggle = useCallback((id: string) => {
+    const p = ultimo.current;
+    if (p.multi) {
+      p.onChange(p.value.includes(id) ? p.value.filter((v) => v !== id) : [...p.value, id]);
+    } else {
+      p.onChange(p.value === id ? "" : id);
+    }
+  }, []);
+
   return (
     <div role={props.multi ? "group" : "radiogroup"} aria-label={label} className={cn("nx-chips", className)}>
-      {opciones.map((o) => {
-        const selected = props.multi ? props.value.includes(o.id) : props.value === o.id;
-        const onToggle = () => {
-          if (props.multi) {
-            props.onChange(selected ? props.value.filter((v) => v !== o.id) : [...props.value, o.id]);
-          } else {
-            props.onChange(selected ? "" : o.id);
-          }
-        };
-        return (
-          <Chip
-            key={o.id}
-            label={o.label}
-            icon={o.icon}
-            desc={o.desc}
-            selected={selected}
-            onToggle={onToggle}
-            multi={!!props.multi}
-            variant={variant}
-          />
-        );
-      })}
+      {opciones.map((o) => (
+        <Chip
+          key={o.id}
+          label={o.label}
+          icon={o.icon}
+          desc={o.desc}
+          selected={props.multi ? props.value.includes(o.id) : props.value === o.id}
+          id={o.id}
+          onToggle={toggle}
+          multi={!!props.multi}
+          variant={variant}
+        />
+      ))}
     </div>
   );
 }

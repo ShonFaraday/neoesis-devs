@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
+import { memo, useEffect, useRef, type CSSProperties, type ReactNode } from "react";
 import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import {
   ArrowRight, BadgeCheck, Briefcase, Calendar, Check, ChevronDown, Clock, Lock, Mail, MapPin,
@@ -70,7 +70,7 @@ function Cabecera({ eyebrow, titulo, centro = false }: { eyebrow: string; titulo
   );
 }
 
-function Bloque({ id, label, icon, alt }: { id: string; label: string; icon: LucideIcon; alt: boolean }) {
+const Bloque = memo(function Bloque({ id, label, icon, alt }: { id: string; label: string; icon: LucideIcon; alt: boolean }) {
   switch (id) {
     case "nosotros":
       return (
@@ -251,11 +251,12 @@ function Bloque({ id, label, icon, alt }: { id: string; label: string; icon: Luc
         </>
       );
   }
-}
+});
 
 type Props = { r: Respuestas; onReorganizar?: () => void };
 
-export function VistaPrevia({ r, onReorganizar }: Props) {
+// memo: solo se redibuja cuando cambian las respuestas.
+export const VistaPrevia = memo(function VistaPrevia({ r, onReorganizar }: Props) {
   const estilo = ESTILOS.find((e) => e.id === r.estilo) ?? ESTILOS.find((e) => e.id === "oscuro")!;
   const t = { ...estilo.tema };
   const hex = r.colores === "tengo" ? r.coloresMarca.match(/#(?:[0-9a-f]{6}|[0-9a-f]{3})\b/i)?.[0] : undefined;
@@ -509,4 +510,4 @@ export function VistaPrevia({ r, onReorganizar }: Props) {
       </div>
     </div>
   );
-}
+});
