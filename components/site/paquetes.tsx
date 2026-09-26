@@ -1,10 +1,12 @@
 import type { CSSProperties } from "react";
+import Link from "next/link";
 import { GlowCard } from "@/components/ui/spotlight-card";
 import { MetodosPago } from "./metodos-pago";
 
 // Paquetes de diseño de páginas (pago único por el diseño).
 const PAQUETES = [
   {
+    id: "landing-sencilla",
     nombre: "Landing sencilla",
     precio: "US$ 190 – 230",
     nota: "Pago único por el diseño",
@@ -19,6 +21,7 @@ const PAQUETES = [
     destacado: false,
   },
   {
+    id: "landing-profesional",
     nombre: "Landing profesional",
     precio: "Desde US$ 310",
     nota: "Según lo que necesite tu negocio",
@@ -33,6 +36,7 @@ const PAQUETES = [
     destacado: true,
   },
   {
+    id: "sistema",
     nombre: "Sistemas a tu medida",
     precio: "A cotizar",
     nota: "Según el alcance del proyecto",
@@ -59,7 +63,7 @@ export function Paquetes() {
           </p>
         </div>
 
-        <div className="nx-grid">
+        <div className="nx-grid nx-pack-grid">
           {PAQUETES.map((p) => (
             <GlowCard
               key={p.nombre}
@@ -82,6 +86,9 @@ export function Paquetes() {
                   <li key={item}>{item}</li>
                 ))}
               </ul>
+              <Link href={`/cotizar?paquete=${p.id}`} className="nx-btn nx-btn-ghost nx-pack-cta">
+                Arma tu cotización <span aria-hidden="true">→</span>
+              </Link>
             </GlowCard>
           ))}
         </div>
