@@ -1,25 +1,30 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import type { CSSProperties } from "react";
+import { useEffect, type CSSProperties } from "react";
+import { useRouter } from "next/navigation";
 import MovingGrid from "@/components/ui/hyper-grid";
 import { AnimatedLogo } from "./animated-logo";
-import { WhatsAppIcon } from "./whatsapp-icon";
-import { whatsappLink } from "@/lib/site-config";
 
 export function Hero() {
   const reduceMotion = useReducedMotion();
+  const router = useRouter();
 
-  // Lleva a la sección de paquetes (con el efecto warp si está permitido).
-  const irAPaquetes = (warp: () => boolean) => {
-    const destino = () =>
-      document.getElementById("paquetes")?.scrollIntoView({ behavior: "smooth" });
+  // Precarga el cotizador para que abra al instante.
+  useEffect(() => {
+    router.prefetch("/cotizar");
+  }, [router]);
+
+  // Lleva al cotizador (con el efecto warp si está permitido).
+  const irACotizar = (warp: () => boolean) => {
+    const destino = () => router.push("/cotizar");
 
     if (reduceMotion) {
       destino();
       return;
     }
     if (warp()) setTimeout(destino, 1100);
+    else destino();
   };
 
   return (
@@ -68,7 +73,7 @@ export function Hero() {
               {/* Botón principal con efecto warp */}
               <button
                 type="button"
-                onClick={() => irAPaquetes(warp)}
+                onClick={() => irACotizar(warp)}
                 className="group relative inline-flex items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#9d74ff]"
               >
                 <div className="absolute inset-0 scale-110 rounded-full bg-gradient-to-r from-[#7c4dff] to-[#e07bff] opacity-40 blur-2xl transition-opacity duration-500 group-hover:opacity-60" />
@@ -78,7 +83,7 @@ export function Hero() {
                   className="relative flex items-center gap-3 overflow-hidden rounded-full border border-white/20 bg-[#0c0915]/70 px-8 py-4 shadow-2xl backdrop-blur-xl"
                 >
                   <span className="relative z-10 text-lg font-semibold tracking-tight text-white">
-                    Ver paquetes
+                    Crea tu web ahora
                   </span>
                   <svg
                     className="relative z-10 h-5 w-5 text-[#c9b3ff] transition-transform duration-300 group-hover:translate-x-1"
@@ -92,20 +97,10 @@ export function Hero() {
                   <div className="absolute inset-0 z-0 -translate-x-full animate-[nx-shimmer_2s_infinite] bg-gradient-to-r from-transparent via-white/25 to-transparent" />
                 </motion.div>
               </button>
-
-              <a
-                className="nx-btn nx-btn-whatsapp nx-btn-lg"
-                href={whatsappLink()}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <WhatsAppIcon />
-                Escríbenos por WhatsApp
-              </a>
             </div>
 
             <p className="nx-rise text-sm text-[#a8a1c4]/80" style={{ "--d": "1.1s" } as CSSProperties}>
-              Esta misma página es un ejemplo de lo que podemos construir para ti.
+              Arma tú mismo la vista previa de tu página en minutos. Si te gusta, la hacemos realidad.
             </p>
           </>
         )}
