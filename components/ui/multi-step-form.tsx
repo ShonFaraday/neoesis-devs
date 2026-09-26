@@ -38,7 +38,7 @@ interface MultiStepFormProps
   onBack: () => void;
   onNext: () => void;
   onClose?: () => void;
-  backButtonText?: string;
+  backButtonText?: React.ReactNode;
   nextButtonText?: React.ReactNode;
   nextButtonClassName?: string;
   footerContent?: React.ReactNode;

@@ -2691,25 +2691,27 @@
   }
 
   /* ---- Aceptar política ---- */
+  /* Aceptar política: apagado (opaco) → encendido (iluminado) */
   .nx-cot-accept {
     display: flex;
     align-items: center;
     gap: 14px;
     padding: 18px 20px;
-    border: 1.5px solid rgba(157, 116, 255, 0.55);
+    border: 1.5px solid rgba(168, 161, 196, 0.3);
     border-radius: 16px;
-    background: linear-gradient(135deg, rgba(157, 116, 255, 0.12), rgba(224, 123, 255, 0.05));
+    background: rgba(255, 255, 255, 0.02);
     font-size: 0.98rem;
     font-weight: 500;
     line-height: 1.5;
-    color: var(--nx-text);
+    color: var(--nx-muted);
+    opacity: 0.8;
     cursor: pointer;
-    transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+    transition: border-color 0.25s, background 0.25s, box-shadow 0.25s, opacity 0.25s, color 0.25s;
   }
 
   .nx-cot-accept:hover {
-    border-color: var(--nx-violet);
-    box-shadow: 0 0 0 4px rgba(157, 116, 255, 0.12);
+    opacity: 1;
+    border-color: color-mix(in srgb, var(--nx-violet) 60%, var(--nx-border));
   }
 
   .nx-cot-accept input {
@@ -2738,13 +2740,22 @@
   }
 
   .nx-cot-accept.is-on {
+    border-style: solid;
     border-color: var(--nx-violet);
-    background: rgba(157, 116, 255, 0.08);
+    background: linear-gradient(135deg, rgba(157, 116, 255, 0.24), rgba(224, 123, 255, 0.1));
+    color: var(--nx-text);
+    opacity: 1;
+    box-shadow: 0 0 0 1px var(--nx-violet), 0 10px 34px rgba(157, 116, 255, 0.35);
   }
 
   .nx-cot-accept.is-on .nx-cot-box {
+    color: var(--nx-orchid);
+    transform: scale(1.12);
+    filter: drop-shadow(0 0 8px rgba(224, 123, 255, 0.7));
+  }
+
+  .nx-cot-accept:not(.is-on) a {
     color: var(--nx-violet);
-    transform: scale(1.1);
   }
 
   .nx-cot-accept:has(input:focus-visible) {
@@ -2863,6 +2874,115 @@
 
   .nx-cot-link.is-warn {
     color: #fca5a5;
+  }
+
+  /* Botón de vista previa (celular y tablet) */
+  .nx-cot-preview-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    height: 48px;
+    padding: 0 20px;
+    border: 1.5px solid var(--nx-violet);
+    border-radius: 999px;
+    background: linear-gradient(135deg, rgba(157, 116, 255, 0.22), rgba(224, 123, 255, 0.12));
+    color: var(--nx-text);
+    font: inherit;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 0 24px rgba(157, 116, 255, 0.3);
+  }
+
+  .nx-cot-preview-btn svg {
+    width: 18px;
+    height: 18px;
+    color: var(--nx-orchid);
+  }
+
+  .nx-cot-preview-btn {
+    white-space: nowrap;
+  }
+
+  /* Punto "en vivo" que late */
+  .nx-cot-live {
+    position: relative;
+    width: 8px;
+    height: 8px;
+    border-radius: 99px;
+    background: var(--nx-orchid);
+  }
+
+  .nx-cot-live::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 99px;
+    background: var(--nx-orchid);
+    animation: nx-live 1.6s ease-out infinite;
+  }
+
+  @media (max-width: 1023px) {
+    .nx-cot-footer {
+      display: grid !important;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 16px !important;
+    }
+
+    .nx-cot-footer > div:first-child {
+      display: contents;
+    }
+
+    .nx-cot-preview-btn {
+      order: 1;
+      width: 100%;
+    }
+
+    .nx-cot-footer > div:last-child {
+      order: 2;
+      display: flex;
+      width: 100%;
+      min-width: 0;
+      gap: 12px;
+    }
+
+    .nx-cot-footer .nx-cot-btn {
+      min-width: 0;
+      padding: 0 16px !important;
+    }
+
+    /* "Atrás" queda como botón redondo con flecha; el principal ocupa el resto */
+    .nx-cot-footer .nx-cot-btn:not(.nx-cot-btn-next) {
+      flex: 0 0 46px;
+      width: 46px;
+      padding: 0 !important;
+    }
+
+    .nx-cot-back-txt {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+    .nx-cot-footer .nx-cot-btn-next {
+      flex: 1 1 0 !important;
+      min-width: 0 !important;
+    }
+
+    .nx-cot-reset {
+      order: 3;
+      justify-self: center;
+    }
+  }
+
+  @media (max-width: 380px) {
+    .nx-cot-footer .nx-cot-btn {
+      font-size: 0.88rem !important;
+    }
   }
 
   .nx-cot-copy {
@@ -4124,6 +4244,11 @@
       overflow: visible;
     }
   }
+}
+
+@keyframes nx-live {
+  from { opacity: 0.8; transform: scale(1); }
+  to { opacity: 0; transform: scale(2.8); }
 }
 
 @keyframes nx-chip-wiggle {

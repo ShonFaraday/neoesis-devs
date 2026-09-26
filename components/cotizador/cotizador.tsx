@@ -4,7 +4,7 @@ import { useCallback, useDeferredValue, useEffect, useMemo, useRef, useState, ty
 import { useMediaQuery } from "@/hooks/use-media-query";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowRight, CircleAlert, CircleCheck, Copy, Eye, Pencil, RotateCcw, Search, Send, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, Circle, CircleAlert, CircleCheck, Copy, Eye, Pencil, RotateCcw, Search, Send, X } from "lucide-react";
 import { MultiStepForm } from "@/components/ui/multi-step-form";
 import { Campo, Chip, Desplegable, GrupoOpciones, deTextos } from "./controles";
 import { VistaPrevia } from "./vista-previa";
@@ -524,7 +524,7 @@ export function Cotizador() {
           </Campo>
           <label className={r.acepta ? "nx-cot-accept is-on" : "nx-cot-accept"}>
             <input type="checkbox" checked={r.acepta} onChange={(e) => upd({ acepta: e.target.checked })} />
-            <span className="nx-cot-box" aria-hidden="true"><CircleCheck /></span>
+            <span className="nx-cot-box" aria-hidden="true">{r.acepta ? <CircleCheck /> : <Circle />}</span>
             <span>
               Acepto la{" "}
               <Link href="/privacidad" target="_blank" rel="noopener noreferrer">política de privacidad</Link>{" "}
@@ -582,10 +582,11 @@ export function Cotizador() {
 
   const pie = (
     <>
-      <button type="button" className="nx-cot-link lg:hidden" onClick={() => setPreviewAbierta(true)}>
-        <Eye aria-hidden="true" /> Vista previa
+      <button type="button" className="nx-cot-preview-btn lg:hidden" onClick={() => setPreviewAbierta(true)}>
+        <span className="nx-cot-live" aria-hidden="true" />
+        <Eye aria-hidden="true" /> Ver vista previa
       </button>
-      <button type="button" className={confirmarBorrar ? "nx-cot-link is-warn" : "nx-cot-link"} onClick={borrarTodo}>
+      <button type="button" className={confirmarBorrar ? "nx-cot-link nx-cot-reset is-warn" : "nx-cot-link nx-cot-reset"} onClick={borrarTodo}>
         <RotateCcw aria-hidden="true" /> {confirmarBorrar ? "¿Seguro? Toca otra vez" : "Empezar de nuevo"}
       </button>
     </>
@@ -640,7 +641,7 @@ export function Cotizador() {
                   progressLabel={`Paso ${idx + 1} de ${pasos.length}`}
                   onBack={atras}
                   onNext={siguiente}
-                  backButtonText="Atrás"
+                  backButtonText={<><ArrowLeft aria-hidden="true" /><span className="nx-cot-back-txt">Atrás</span></>}
                   nextButtonText={
                     actual === "resumen" ? (
                       <><Send aria-hidden="true" /> Enviar por WhatsApp</>
