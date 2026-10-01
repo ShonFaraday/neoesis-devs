@@ -43,7 +43,7 @@ export default function TerminosPage() {
           <strong>Landing profesional:</strong> desde US$ 310, según lo que requiera cada negocio.
         </li>
         <li>
-          <strong>Sistemas a medida</strong> (facturación, tiendas online y desarrollos similares):
+          <strong>Sistemas a medida</strong> (CRM, intranets, inventario, tiendas online y desarrollos similares):
           precio a cotizar según el alcance.
         </li>
       </ul>

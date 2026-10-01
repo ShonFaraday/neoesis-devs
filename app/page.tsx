@@ -8,6 +8,7 @@ import { Paquetes } from "@/components/site/paquetes";
 import { Portafolio } from "@/components/site/portafolio";
 import { Proceso } from "@/components/site/proceso";
 import { Negocios } from "@/components/site/negocios";
+import { Sistemas, FaqSistemas } from "@/components/site/sistemas";
 import { QuienesSomos, CtaFinal, Colaboradores } from "@/components/site/secciones-finales";
 import { Footer } from "@/components/site/footer";
 import { Pricing } from "@/components/ui/pricing";
@@ -58,6 +59,7 @@ export default function Home() {
         <Hero />
         <VideoDemo />
         <Paquetes />
+        <Sistemas />
         <div className="nx-section-alt nx-planes-bg">
           <div className="nx-planes-bg-layer" aria-hidden="true" />
           <div className="relative z-10">
@@ -73,6 +75,7 @@ export default function Home() {
         <Portafolio />
         <Proceso />
         <Negocios />
+        <FaqSistemas />
         <QuienesSomos />
         <CtaFinal />
         <Colaboradores />

@@ -62,8 +62,11 @@ export function Hero() {
               className="nx-rise mx-auto max-w-2xl text-lg leading-relaxed text-[#a8a1c4] md:text-xl"
               style={{ "--d": "0.7s" } as CSSProperties}
             >
-              Diseñamos y publicamos páginas web rápidas y claras, hechas para que quien las visita
-              entienda tu negocio en segundos y te escriba directo por WhatsApp.
+              <strong className="block pb-2 text-xl font-semibold text-[#f3f0fb] md:text-2xl">
+                Páginas web y sistemas a medida para tu negocio
+              </strong>
+              Desde una página que te trae clientes por WhatsApp hasta el sistema que ordena tus
+              ventas, tu inventario o tus citas.
             </p>
 
             <div
@@ -97,6 +100,13 @@ export function Hero() {
                   <div className="absolute inset-0 z-0 -translate-x-full animate-[nx-shimmer_2s_infinite] bg-gradient-to-r from-transparent via-white/25 to-transparent" />
                 </motion.div>
               </button>
+
+              <a
+                href="#sistemas"
+                className="rounded-full border border-white/15 bg-white/5 px-7 py-4 text-lg font-semibold tracking-tight text-[#e6dcff] backdrop-blur-md transition-colors hover:border-[#9d74ff] hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#9d74ff]"
+              >
+                Ver sistemas a medida
+              </a>
             </div>
 
             <p className="nx-rise text-sm text-[#a8a1c4]/80" style={{ "--d": "1.1s" } as CSSProperties}>

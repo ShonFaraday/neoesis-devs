@@ -3,9 +3,10 @@ import Link from "next/link";
 import { LegalPage } from "@/components/site/legal-page";
 import { WhatsAppIcon } from "@/components/site/whatsapp-icon";
 import { whatsappLink } from "@/lib/site-config";
+import { FAQ_SISTEMAS } from "@/lib/sistemas";
 
 const descripcion =
-  "Respuestas sobre precios, dominio, planes de mantenimiento, métodos de pago y cómo trabajamos en Neoesis DEVS®.";
+  "Respuestas sobre precios, dominio, sistemas a medida, planes de mantenimiento, métodos de pago y cómo trabajamos en Neoesis DEVS®.";
 
 export const metadata: Metadata = {
   title: "Preguntas frecuentes",
@@ -30,7 +31,7 @@ const GRUPOS: { titulo: string; preguntas: Pregunta[] }[] = [
           <>
             Tenemos tres tipos de proyecto: una <strong>landing sencilla</strong> desde US$ 190 hasta
             US$ 230, una <strong>landing profesional</strong> desde US$ 310, y{" "}
-            <strong>sistemas a medida</strong> (facturación, tiendas online y similares) con precio
+            <strong>sistemas a medida</strong> (CRM, inventario, tiendas online y similares) con precio
             a cotizar. El precio final lo verás en la cotización que te enviamos por escrito.
           </>
         ),
@@ -45,9 +46,13 @@ const GRUPOS: { titulo: string; preguntas: Pregunta[] }[] = [
       },
       {
         p: "¿También hacen tiendas online o sistemas?",
-        r: "Sí. Para tiendas online (e-commerce), sistemas de facturación, paneles de administración y otros desarrollos específicos, preparamos una cotización a medida según lo que necesite tu negocio.",
+        r: "Sí. Hacemos CRM de clientes y ventas, intranets y paneles de administración, control de inventario y pedidos, sistemas de citas, portales para tus clientes y tiendas online (e-commerce). Preparamos una cotización a medida según lo que necesite tu negocio.",
       },
     ],
+  },
+  {
+    titulo: "Sistemas a medida",
+    preguntas: FAQ_SISTEMAS,
   },
   {
     titulo: "Cómo trabajamos",

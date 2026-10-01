@@ -6,6 +6,7 @@ import { whatsappLink } from "@/lib/site-config";
 
 const NAV = [
   { id: "paquetes", label: "Paquetes" },
+  { id: "sistemas", label: "Sistemas" },
   { id: "planes", label: "Planes" },
   { id: "portafolio", label: "Portafolio" },
   { id: "proceso", label: "Cómo trabajamos" },

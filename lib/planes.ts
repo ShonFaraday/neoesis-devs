@@ -40,7 +40,7 @@ export const planes: PricingPlan[] = [
     yearlyPrice: null,
     priceLabel: "A medida",
     features: [
-      "Sistemas de facturación",
+      "Integración con tu facturación electrónica",
       "Tiendas online (e-commerce)",
       "Paneles de administración y base de datos",
       "Control de inventario y pedidos",

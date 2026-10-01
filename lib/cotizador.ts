@@ -28,7 +28,7 @@ export type PreguntaRubro = {
 export const PAQUETES_COT: Opcion[] = [
   { id: "landing-sencilla", label: "Landing sencilla", desc: "US$ 190 – 230 · una página directa", icon: LayoutTemplate },
   { id: "landing-profesional", label: "Landing profesional", desc: "Desde US$ 310 · varias secciones y animaciones", icon: Sparkles },
-  { id: "sistema", label: "Sistema a medida", desc: "A cotizar · tiendas, paneles, facturación", icon: LayoutDashboard },
+  { id: "sistema", label: "Sistema a medida", desc: "A cotizar · CRM, paneles, inventario, tiendas", icon: LayoutDashboard },
   { id: "asesoria", label: "No estoy seguro", desc: "Asesórenme según mi negocio", icon: Lightbulb },
 ];
 
