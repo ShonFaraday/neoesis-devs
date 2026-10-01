@@ -881,7 +881,7 @@
   /* ---------- Cómo trabajamos: pasos conectados ---------- */
   .nx-flow {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(var(--n, 4), minmax(0, 1fr));
     gap: 28px;
   }
 
@@ -4525,5 +4525,432 @@
 
   .nx-sys-cta {
     align-self: end;
+  }
+}
+
+/* =========================================================
+   Cotizador: vista previa del sistema (panel de ejemplo)
+   ========================================================= */
+@layer components {
+  .ps-app {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    min-height: 100%;
+    color: var(--pv-text);
+    font-size: 11px;
+    line-height: 1.4;
+  }
+
+  .ps-app svg {
+    flex: none;
+    width: 13px;
+    height: 13px;
+  }
+
+  .ps-side {
+    padding: 14px 10px;
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+    background: #120e20;
+  }
+
+  .ps-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 18px;
+    padding: 0 4px;
+  }
+
+  .ps-brand b {
+    overflow: hidden;
+    font-size: 11.5px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ps-logo {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--pv-accent), var(--pv-accent2));
+    color: #140b2b;
+  }
+
+  .ps-side nav {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .ps-side nav span {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 8px;
+    border-radius: 8px;
+    color: var(--pv-muted);
+  }
+
+  .ps-side nav span.is-on {
+    background: rgba(157, 116, 255, 0.16);
+    color: var(--pv-text);
+  }
+
+  .ps-main {
+    min-width: 0;
+    padding: 14px 16px 20px;
+  }
+
+  .ps-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  .ps-search {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    gap: 6px;
+    max-width: 200px;
+    padding: 6px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    color: var(--pv-muted);
+  }
+
+  .ps-top-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--pv-muted);
+  }
+
+  .ps-user {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 9px;
+    border-radius: 999px;
+    background: var(--pv-surface);
+    white-space: nowrap;
+  }
+
+  .ps-hello {
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  .ps-sub {
+    margin-bottom: 14px;
+    color: var(--pv-muted);
+  }
+
+  .ps-kpis {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .ps-kpi {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--pv-radius);
+    background: var(--pv-surface);
+  }
+
+  .ps-kpi span {
+    color: var(--pv-muted);
+  }
+
+  .ps-kpi b {
+    font-size: 16px;
+    letter-spacing: -0.02em;
+  }
+
+  .ps-kpi.is-empty i {
+    display: block;
+    height: 7px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .ps-kpi.is-empty i:first-child {
+    width: 60%;
+  }
+
+  .ps-kpi.is-empty i:last-child {
+    width: 40%;
+    height: 12px;
+  }
+
+  .ps-card {
+    padding: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--pv-radius);
+    background: var(--pv-surface);
+  }
+
+  .ps-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .ps-btn {
+    flex: none;
+    padding: 4px 9px;
+    border-radius: 999px;
+    background: var(--pv-accent);
+    color: #140b2b;
+    font-weight: 600;
+  }
+
+  .ps-row {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr 0.9fr;
+    gap: 8px;
+    align-items: center;
+    padding: 8px 2px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .ps-row.is-head {
+    border-top: 0;
+    color: var(--pv-muted);
+    font-weight: 600;
+  }
+
+  .ps-row i {
+    display: block;
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  .ps-tag {
+    display: inline-block;
+    padding: 2px 7px;
+    border-radius: 999px;
+    font-size: 10px;
+    font-style: normal;
+  }
+
+  .ps-tag.t0 { background: rgba(37, 211, 102, 0.15); color: #6ee7a0; }
+  .ps-tag.t1 { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+  .ps-tag.t2 { background: rgba(157, 116, 255, 0.18); color: #c9b3ff; }
+  .ps-tag.t3 { background: rgba(224, 123, 255, 0.15); color: #f0abfc; }
+
+  .ps-note {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 12px;
+    padding: 9px 11px;
+    border: 1px dashed rgba(157, 116, 255, 0.4);
+    border-radius: var(--pv-radius);
+    color: #c9b3ff;
+  }
+
+  @media (max-width: 520px) {
+    .ps-app {
+      grid-template-columns: 1fr;
+    }
+
+    .ps-side {
+      display: none;
+    }
+  }
+}
+
+/* Botón principal morado y acciones de sistemas */
+@layer components {
+  .nx-btn-primary {
+    background: linear-gradient(135deg, var(--nx-violet), var(--nx-orchid));
+    color: var(--nx-ink);
+  }
+
+  .nx-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(157, 116, 255, 0.4);
+  }
+
+  .nx-sys-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 40px;
+  }
+
+  .nx-sys-actions + .nx-sys-foot {
+    margin-top: 20px;
+    font-size: 0.92rem;
+  }
+
+  .nx-flow-note {
+    margin-top: 36px;
+    text-align: center;
+    color: var(--nx-muted);
+  }
+
+  .nx-flow-note strong {
+    color: var(--nx-text);
+  }
+}
+
+/* =========================================================
+   Página /sistemas
+   ========================================================= */
+@layer components {
+  .nx-sys-hero {
+    padding-top: 64px;
+    background:
+      radial-gradient(60% 80% at 85% 0%, rgba(157, 116, 255, 0.16), transparent 70%),
+      var(--nx-bg);
+  }
+
+  .nx-sys-hero .nx-section-head {
+    max-width: 720px;
+    margin-bottom: 32px;
+  }
+
+  .nx-sys-hero h1 {
+    margin-bottom: 0.45em;
+    font-size: clamp(2rem, 4.4vw, 3.1rem);
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+  }
+
+  .nx-sys-datos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+
+  .nx-sys-datos li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    border: 1px solid var(--nx-border);
+    border-radius: 14px;
+    background: var(--nx-surface);
+  }
+
+  .nx-sys-datos svg {
+    width: 22px;
+    height: 22px;
+    color: var(--nx-orchid);
+  }
+
+  .nx-sys-datos strong {
+    display: block;
+    font-weight: 600;
+  }
+
+  .nx-sys-datos span {
+    font-size: 0.85rem;
+    color: var(--nx-muted);
+  }
+
+  .nx-sys-actions.is-left {
+    justify-content: flex-start;
+    margin-top: 32px;
+  }
+
+  .nx-rubros.nx-rubros-hero {
+    margin: 40px 0 0;
+  }
+
+  /* Detalle de cada sistema */
+  .nx-sys-detalle {
+    display: grid;
+    gap: 20px;
+  }
+
+  .nx-sys-det {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 32px;
+    padding: 30px 28px;
+    scroll-margin-top: 24px;
+  }
+
+  .nx-sys-det-intro .nx-sys-head {
+    margin-bottom: 12px;
+  }
+
+  .nx-card .nx-sys-ideal {
+    margin-top: 12px;
+    font-size: 0.88rem;
+    color: #cdc6e4;
+  }
+
+  .nx-sys-det-list {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 22px;
+  }
+
+  .nx-sys-det-list .nx-btn .nx-ico {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* Condiciones bajo los precios */
+  .nx-sys-condiciones {
+    display: grid;
+    gap: 10px;
+    margin-top: 36px;
+    padding: 22px 24px;
+    border: 1px dashed var(--nx-border);
+    border-radius: 14px;
+  }
+
+  .nx-sys-condiciones li {
+    position: relative;
+    padding-left: 22px;
+    font-size: 0.92rem;
+    color: var(--nx-muted);
+  }
+
+  .nx-sys-condiciones li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--nx-violet);
+    font-weight: 700;
+  }
+
+  @media (max-width: 760px) {
+    .nx-sys-det {
+      grid-template-columns: 1fr;
+      gap: 20px;
+      padding: 24px 20px;
+    }
+
+    .nx-sys-datos li {
+      flex: 1 1 100%;
+    }
+
+    .nx-sys-hero {
+      padding-top: 40px;
+    }
   }
 }

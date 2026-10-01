@@ -44,7 +44,8 @@ export default function TerminosPage() {
         </li>
         <li>
           <strong>Sistemas a medida</strong> (CRM, intranets, inventario, tiendas online y desarrollos similares):
-          precio a cotizar según el alcance.
+          desde US$ 1,000. Un sistema completo suele estar entre US$ 1,500 y US$ 2,000, según su
+          complejidad y el volumen de datos de la empresa.
         </li>
       </ul>
       <p>

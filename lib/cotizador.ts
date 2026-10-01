@@ -1,13 +1,14 @@
 // Datos del cuestionario de cotización (/cotizar).
 // Para agregar o quitar rubros, preguntas u opciones, edita solo este archivo.
 import type { LucideIcon } from "lucide-react";
+import { PRECIO_DESDE_SISTEMA, SISTEMAS } from "./sistemas";
 import {
   Activity, Apple, Baby, Beer, Bike, Book, BookOpen, Bot, Boxes, Briefcase, Bug, Building, Calculator,
   CalendarDays, Camera, Car, ChefHat, Church, Clapperboard, Coffee, CreditCard, Croissant, Dog,
   Dumbbell, Factory, FileText, Film, FlaskConical, Flower, Flower2, Footprints, Gem, Glasses, Globe,
   GraduationCap, Hammer, HandHeart, HardHat, Heart, HeartPulse, Hotel, House, IceCreamCone, Image, Key,
   Languages, Laptop, LayoutDashboard, LayoutTemplate, Leaf, Lightbulb, Mail, Map as MapIcon, MapPin, Megaphone,
-  MessageCircle, Mic, Music, Newspaper, Package, PackageOpen, Palette, PartyPopper, PawPrint, PenTool,
+  MessageCircle, Mic, Music, Newspaper, Package, PackageOpen, Palette, PartyPopper, PawPrint, Pencil, PenTool,
   Pill, Pizza, Plane, Plug, QrCode, Receipt, Rocket, Ruler, Scale, School, Scissors, Shield, Shirt,
   ShoppingCart, Sofa, Soup, Sparkles, SprayCan, Stamp, Star, Stethoscope, Store, Swords, Tag, Target,
   Toothbrush, ToyBrick, Tractor, TreePine, Trophy, Truck, User, Users, UtensilsCrossed, Warehouse,
@@ -28,9 +29,28 @@ export type PreguntaRubro = {
 export const PAQUETES_COT: Opcion[] = [
   { id: "landing-sencilla", label: "Landing sencilla", desc: "US$ 190 – 230 · una página directa", icon: LayoutTemplate },
   { id: "landing-profesional", label: "Landing profesional", desc: "Desde US$ 310 · varias secciones y animaciones", icon: Sparkles },
-  { id: "sistema", label: "Sistema a medida", desc: "A cotizar · CRM, paneles, inventario, tiendas", icon: LayoutDashboard },
+  { id: "sistema", label: "Sistema a medida", desc: `Desde ${PRECIO_DESDE_SISTEMA} · CRM, inventario, citas, intranet`, icon: LayoutDashboard },
   { id: "asesoria", label: "No estoy seguro", desc: "Asesórenme según mi negocio", icon: Lightbulb },
 ];
+
+// ---------- Rama "Sistema a medida" ----------
+export const PAQUETE_SISTEMA = "sistema";
+
+// Los módulos salen de lib/sistemas.ts; aquí solo se suman los extra.
+export const MODULOS_SISTEMA: Opcion[] = [
+  ...SISTEMAS.map((s) => ({ id: s.id, label: s.nombre, icon: s.icono })),
+  { id: "reportes", label: "Reportes y gráficos", icon: Activity },
+  { id: "otro-modulo", label: "Otra cosa", icon: Pencil },
+];
+export const USUARIOS_SISTEMA = ["Solo yo", "2 a 5 personas", "6 a 20 personas", "Más de 20"];
+export const HOY_SISTEMA: Opcion[] = [
+  { id: "excel", label: "Excel o Google Sheets", icon: FileText },
+  { id: "cuaderno", label: "Cuaderno o papel", icon: Book },
+  { id: "whatsapp", label: "Por WhatsApp", icon: MessageCircle },
+  { id: "otro-sistema", label: "Otro sistema", icon: Laptop },
+  { id: "nada", label: "No lo llevo aún", icon: Lightbulb },
+];
+export const FACTURACION_SISTEMA = ["Sí, ya tengo proveedor", "Sí, pero no tengo proveedor", "No la necesito", "No lo sé"];
 
 // ---------- Preguntas específicas por rubro ----------
 const SI_NO = ["Sí", "No", "Aún no lo sé"];
@@ -407,6 +427,9 @@ export const MATERIALES: { id: "logo" | "fotos" | "textos" | "dominio"; label: s
 export const PLAZOS = ["Urgente (menos de 1 semana)", "2 a 3 semanas", "1 mes", "Sin apuro"];
 export const PRESUPUESTOS = ["US$ 190 – 230", "US$ 230 – 310", "US$ 310 – 500", "Más de US$ 500", "No lo sé"];
 export const MANTENIMIENTO = ["Plan ECO", "Plan PREMIUM", "Todavía no"];
+export const PLAZOS_SISTEMA = ["Lo antes posible", "1 a 2 meses", "3 meses o más", "Sin apuro"];
+export const PRESUPUESTOS_SISTEMA = ["US$ 1,000 – 1,500", "US$ 1,500 – 2,000", "Más de US$ 2,000", "No lo sé"];
+export const PAGO_SISTEMA = ["50% al iniciar y 50% al entregar", "Por etapas", "Conversémoslo"];
 export const HORARIOS = ["Mañana", "Tarde", "Noche", "Cualquier hora"];
 
 // ---------- Estado del cuestionario ----------
@@ -415,6 +438,12 @@ export type Respuestas = {
   rubro: string;
   rubroOtro: string;
   especificas: Record<string, string | string[]>;
+  sistemaModulos: string[];
+  sistemaUsuarios: string;
+  sistemaHoy: string[];
+  sistemaFacturacion: string;
+  sistemaDetalle: string;
+  formaPago: string;
   negocioNombre: string;
   estadoNegocio: string;
   antiguedad: string;
@@ -451,6 +480,12 @@ export const RESPUESTAS_INICIALES: Respuestas = {
   rubro: "",
   rubroOtro: "",
   especificas: {},
+  sistemaModulos: [],
+  sistemaUsuarios: "",
+  sistemaHoy: [],
+  sistemaFacturacion: "",
+  sistemaDetalle: "",
+  formaPago: "",
   negocioNombre: "",
   estadoNegocio: "",
   antiguedad: "",
@@ -510,7 +545,17 @@ export function resumen(r: Respuestas): GrupoResumen[] {
     ["Público", etiquetas(PUBLICO, r.publico)],
     ["Descripción", r.descripcion],
   ]);
-  const preg = preguntasDe(r.rubro);
+  const esSistema = r.paquete === PAQUETE_SISTEMA;
+  if (esSistema) {
+    add("sistema", "Sistema", [
+      ["Quiero gestionar", etiquetas(MODULOS_SISTEMA, r.sistemaModulos)],
+      ["Lo usarían", r.sistemaUsuarios],
+      ["Hoy lo llevo en", etiquetas(HOY_SISTEMA, r.sistemaHoy)],
+      ["Facturación electrónica", r.sistemaFacturacion],
+      ["Qué debe hacer", r.sistemaDetalle],
+    ]);
+  }
+  const preg = esSistema ? [] : preguntasDe(r.rubro);
   add(
     "especificas",
     "Detalles del rubro",
@@ -519,26 +564,30 @@ export function resumen(r: Respuestas): GrupoResumen[] {
       return [p.label.replace(/^¿|\?$/g, ""), Array.isArray(v) ? v.join(", ") : v];
     })
   );
-  add("objetivos", "Objetivos", [["Quiero", etiquetas(OBJETIVOS, r.objetivos)]]);
-  add("secciones", "Secciones", [["Secciones", etiquetas(SECCIONES, r.secciones)]]);
-  add("funciones", "Funciones", [["Funciones", etiquetas(FUNCIONES, r.funciones)]]);
-  add("estilo", "Estilo", [
-    ["Estilo", r.estilo && etiqueta(ESTILOS, r.estilo)],
-    ["Distribución", r.distribucion && r.distribucion !== "clasica" ? etiqueta(DISTRIBUCIONES, r.distribucion) : ""],
-    ["Colores", r.colores === "tengo" ? r.coloresMarca || "Tengo colores de marca" : r.colores && "Que ustedes sugieran"],
-    ["Evitar", r.coloresEvitar],
-    ["Tono", r.tono],
-    ["Referencias", r.referencias],
-  ]);
-  add("materiales", "Materiales", [
-    ...MATERIALES.map((m) => [m.label, r.materiales[m.id]] as [string, string]),
-    ["Web actual", r.webActual],
-    ["Redes", r.redes],
-  ]);
+  // Diseño web: no aplica a la rama de sistemas
+  if (!esSistema) {
+    add("objetivos", "Objetivos", [["Quiero", etiquetas(OBJETIVOS, r.objetivos)]]);
+    add("secciones", "Secciones", [["Secciones", etiquetas(SECCIONES, r.secciones)]]);
+    add("funciones", "Funciones", [["Funciones", etiquetas(FUNCIONES, r.funciones)]]);
+    add("estilo", "Estilo", [
+      ["Estilo", r.estilo && etiqueta(ESTILOS, r.estilo)],
+      ["Distribución", r.distribucion && r.distribucion !== "clasica" ? etiqueta(DISTRIBUCIONES, r.distribucion) : ""],
+      ["Colores", r.colores === "tengo" ? r.coloresMarca || "Tengo colores de marca" : r.colores && "Que ustedes sugieran"],
+      ["Evitar", r.coloresEvitar],
+      ["Tono", r.tono],
+      ["Referencias", r.referencias],
+    ]);
+    add("materiales", "Materiales", [
+      ...MATERIALES.map((m) => [m.label, r.materiales[m.id]] as [string, string]),
+      ["Web actual", r.webActual],
+      ["Redes", r.redes],
+    ]);
+  }
   add("contacto", "Plazo y presupuesto", [
     ["Plazo", r.plazo],
     ["Presupuesto", r.presupuesto],
-    ["Mantenimiento", r.mantenimiento],
+    ["Mantenimiento", !esSistema && r.mantenimiento],
+    ["Forma de pago", esSistema && r.formaPago],
   ]);
   add("contacto", "Contacto", [
     ["Nombre", r.nombre],
@@ -551,7 +600,8 @@ export function resumen(r: Respuestas): GrupoResumen[] {
 }
 
 export function mensajeWhatsapp(r: Respuestas, marca: string) {
-  const partes = [`Hola ${marca}, quiero cotizar mi página web. Estas son mis respuestas:`];
+  const que = r.paquete === PAQUETE_SISTEMA ? "un sistema a medida" : "mi página web";
+  const partes = [`Hola ${marca}, quiero cotizar ${que}. Estas son mis respuestas:`];
   for (const grupo of resumen(r)) {
     partes.push(`\n*${grupo.titulo}*`);
     for (const [k, v] of grupo.items) partes.push(`• ${k}: ${v}`);

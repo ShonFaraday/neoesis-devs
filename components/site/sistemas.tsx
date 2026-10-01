@@ -59,31 +59,20 @@ export function Sistemas() {
           })}
         </div>
 
-        {/* Confianza y seguridad */}
-        <div className="nx-sys-trust">
-          <div className="nx-sys-trust-head">
-            <h3>Tu información, en buenas manos</h3>
-            <p>Lo que cuida cada sistema que entregamos.</p>
-          </div>
-          <ul className="nx-sys-trust-grid">
-            {SEGURIDAD.map(({ titulo, texto, icono: Icono }) => (
-              <li key={titulo}>
-                <Icono aria-hidden="true" />
-                <div>
-                  <strong>{titulo}</strong>
-                  <span>{texto}</span>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <ConfianzaSistemas />
 
+        <div className="nx-sys-actions">
+          <Link href="/cotizar?paquete=sistema" className="nx-btn nx-btn-primary">
+            Cotizar mi sistema <span aria-hidden="true">→</span>
+          </Link>
+          <Link href="/sistemas" className="nx-btn nx-btn-ghost">
+            Ver precios, tiempos y detalle
+          </Link>
+        </div>
         <p className="nx-sys-foot">
           ¿Tu negocio necesita algo distinto?{" "}
           <a
-            href={whatsappLink(
-              `Hola ${BRAND_NAME}, quiero cotizar un sistema a medida para mi negocio`
-            )}
+            href={whatsappLink(`Hola ${BRAND_NAME}, quiero cotizar un sistema a medida para mi negocio`)}
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -93,6 +82,29 @@ export function Sistemas() {
         </p>
       </div>
     </section>
+  );
+}
+
+// Bloque de confianza y seguridad (inicio y /sistemas)
+export function ConfianzaSistemas() {
+  return (
+    <div className="nx-sys-trust">
+      <div className="nx-sys-trust-head">
+        <h3>Tu información, en buenas manos</h3>
+        <p>Lo que cuida cada sistema que entregamos.</p>
+      </div>
+      <ul className="nx-sys-trust-grid">
+        {SEGURIDAD.map(({ titulo, texto, icono: Icono }) => (
+          <li key={titulo}>
+            <Icono aria-hidden="true" />
+            <div>
+              <strong>{titulo}</strong>
+              <span>{texto}</span>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
 

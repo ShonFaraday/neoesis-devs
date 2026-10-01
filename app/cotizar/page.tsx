@@ -4,14 +4,14 @@ import { Footer } from "@/components/site/footer";
 import { CotizadorClient } from "@/components/cotizador/cotizador-client";
 
 const descripcion =
-  "Responde unas preguntas sobre tu negocio y recibe una cotización a medida para tu página web. Rápido, gratis y sin compromiso.";
+  "Responde unas preguntas sobre tu negocio y recibe una cotización a medida para tu página web o tu sistema (CRM, inventario, citas). Rápido, gratis y sin compromiso.";
 
 export const metadata: Metadata = {
-  title: "Cotiza tu página web",
+  title: "Cotiza tu página web o sistema",
   description: descripcion,
   alternates: { canonical: "/cotizar" },
   openGraph: {
-    title: "Cotiza tu página web | Neoesis DEVS®",
+    title: "Cotiza tu página web o sistema | Neoesis DEVS®",
     description: descripcion,
     url: "/cotizar",
   },

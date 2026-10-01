@@ -7,6 +7,7 @@ import { CITY, CONTACT_EMAIL, WHATSAPP_DISPLAY, whatsappLink } from "@/lib/site-
 const SECCIONES = [
   { href: "/#inicio", label: "Inicio" },
   { href: "/#paquetes", label: "Paquetes" },
+  { href: "/sistemas", label: "Sistemas a medida" },
   { href: "/#planes", label: "Planes de mantenimiento" },
   { href: "/#portafolio", label: "Portafolio" },
   { href: "/#proceso", label: "Cómo trabajamos" },

@@ -31,8 +31,8 @@ const GRUPOS: { titulo: string; preguntas: Pregunta[] }[] = [
           <>
             Tenemos tres tipos de proyecto: una <strong>landing sencilla</strong> desde US$ 190 hasta
             US$ 230, una <strong>landing profesional</strong> desde US$ 310, y{" "}
-            <strong>sistemas a medida</strong> (CRM, inventario, tiendas online y similares) con precio
-            a cotizar. El precio final lo verás en la cotización que te enviamos por escrito.
+            <strong>sistemas a medida</strong> (CRM, inventario, tiendas online y similares) desde
+            US$ 1,000 según su complejidad. El precio final lo verás en la cotización que te enviamos por escrito.
           </>
         ),
       },

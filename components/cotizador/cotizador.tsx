@@ -8,27 +8,33 @@ import { ArrowLeft, ArrowRight, Circle, CircleAlert, CircleCheck, Copy, Eye, Pen
 import { MultiStepForm } from "@/components/ui/multi-step-form";
 import { Campo, Chip, Desplegable, GrupoOpciones, deTextos } from "./controles";
 import { VistaPrevia } from "./vista-previa";
+import { VistaSistema } from "./vista-sistema";
 import { BRAND_NAME, whatsappLink } from "@/lib/site-config";
 import {
-  ANTIGUEDAD, ATENCION, CATEGORIAS, COLORES, DISTRIBUCIONES, ESTADO_NEGOCIO, ESTILOS, FUNCIONES, HORARIOS, MANTENIMIENTO,
-  MATERIALES, OBJETIVOS, PAQUETES_COT, PLAZOS, PRESUPUESTOS, PUBLICO, RESPUESTAS_INICIALES, RUBRO_OTRO,
-  SECCIONES, TONOS, buscarRubro, mensajeWhatsapp, nombreRubro, preguntasDe, resumen, type Respuestas,
+  ANTIGUEDAD, ATENCION, CATEGORIAS, COLORES, DISTRIBUCIONES, ESTADO_NEGOCIO, ESTILOS, FACTURACION_SISTEMA, FUNCIONES,
+  HORARIOS, HOY_SISTEMA, MANTENIMIENTO, MATERIALES, MODULOS_SISTEMA, OBJETIVOS, PAGO_SISTEMA, PAQUETE_SISTEMA, PAQUETES_COT,
+  PLAZOS, PLAZOS_SISTEMA, PRESUPUESTOS, PRESUPUESTOS_SISTEMA, PUBLICO, RESPUESTAS_INICIALES, RUBRO_OTRO,
+  SECCIONES, TONOS, USUARIOS_SISTEMA, buscarRubro, mensajeWhatsapp, nombreRubro, preguntasDe, resumen, type Respuestas,
 } from "@/lib/cotizador";
 
 type PasoId =
-  | "paquete" | "rubro" | "especificas" | "negocio" | "objetivos" | "secciones"
+  | "paquete" | "rubro" | "especificas" | "sistema" | "negocio" | "objetivos" | "secciones"
   | "funciones" | "estilo" | "materiales" | "contacto" | "resumen";
 
 const ORDEN: PasoId[] = [
-  "paquete", "rubro", "especificas", "negocio", "objetivos", "secciones",
+  "paquete", "rubro", "especificas", "sistema", "negocio", "objetivos", "secciones",
   "funciones", "estilo", "materiales", "contacto", "resumen",
 ];
+
+// Pasos de la rama "Sistema a medida" (sin las preguntas de diseño web)
+const PASOS_SISTEMA: PasoId[] = ["paquete", "rubro", "sistema", "negocio", "contacto", "resumen"];
 
 const META: Record<PasoId, { titulo: string; desc: string }> = {
   paquete: { titulo: "¿Qué paquete te interesa?", desc: "Si aún no lo sabes, te asesoramos sin compromiso." },
   rubro: { titulo: "¿A qué se dedica tu negocio?", desc: "Elige tu rubro. Si no está en la lista, elige “Otro” y cuéntanos." },
   especificas: { titulo: "Unos detalles de tu rubro", desc: "Así sabemos qué necesita tu página desde el inicio." },
-  negocio: { titulo: "Cuéntanos de tu negocio", desc: "Con esto empezamos a darle forma a tu web." },
+  sistema: { titulo: "¿Qué quieres gestionar?", desc: "Cuéntanos qué necesitas ordenar y cómo lo llevas hoy." },
+  negocio: { titulo: "Cuéntanos de tu negocio", desc: "Con esto empezamos a darle forma a tu proyecto." },
   objetivos: { titulo: "¿Qué quieres lograr con tu web?", desc: "Marca todas las que apliquen." },
   secciones: { titulo: "¿Qué secciones necesitas?", desc: "Mira cómo se va armando tu página en la vista previa." },
   funciones: { titulo: "¿Qué funciones quieres?", desc: "Elige todo lo que tu página debe poder hacer." },
@@ -119,9 +125,13 @@ export function Cotizador() {
     setError(null);
   }, []);
 
+  const esSistema = r.paquete === PAQUETE_SISTEMA;
   const pasos = useMemo(
-    () => ORDEN.filter((p) => p !== "especificas" || preguntasDe(r.rubro).length > 0),
-    [r.rubro]
+    () =>
+      esSistema
+        ? PASOS_SISTEMA
+        : ORDEN.filter((p) => p !== "sistema" && (p !== "especificas" || preguntasDe(r.rubro).length > 0)),
+    [esSistema, r.rubro]
   );
   const actual: PasoId = pasos.includes(paso) ? paso : "negocio";
   const idx = pasos.indexOf(actual);
@@ -143,6 +153,9 @@ export function Cotizador() {
     if (p === "rubro") {
       if (!r.rubro) return "Elige el rubro de tu negocio para continuar.";
       if (r.rubro === RUBRO_OTRO && !r.rubroOtro.trim()) return "Cuéntanos cuál es tu rubro.";
+    }
+    if (p === "sistema" && r.sistemaModulos.length === 0 && !r.sistemaDetalle.trim()) {
+      return "Elige al menos una opción o cuéntanos qué necesitas.";
     }
     if (p === "contacto") {
       if (!r.nombre.trim()) return "Escribe tu nombre.";
@@ -347,6 +360,28 @@ export function Cotizador() {
       );
       break;
 
+    case "sistema":
+      contenido = (
+        <div className="nx-cot-stack">
+          <Campo label="¿Qué quieres gestionar con tu sistema?" contador={r.sistemaModulos.length}>
+            <GrupoOpciones multi label="Módulos" className="nx-chips-2" opciones={MODULOS_SISTEMA} value={r.sistemaModulos} onChange={(v) => upd({ sistemaModulos: v })} />
+          </Campo>
+          <Campo label="¿Cuántas personas lo usarían?">
+            <GrupoOpciones label="Usuarios" opciones={deTextos(USUARIOS_SISTEMA)} value={r.sistemaUsuarios} onChange={(v) => upd({ sistemaUsuarios: v })} />
+          </Campo>
+          <Campo label="¿Cómo lo llevas hoy?" contador={r.sistemaHoy.length}>
+            <GrupoOpciones multi label="Cómo lo llevas hoy" opciones={HOY_SISTEMA} value={r.sistemaHoy} onChange={(v) => upd({ sistemaHoy: v })} />
+          </Campo>
+          <Campo label="¿Necesitas integrarlo con facturación electrónica?" hint="En Perú se emite a través de un proveedor autorizado por SUNAT; nosotros conectamos tu sistema con él.">
+            <GrupoOpciones label="Facturación electrónica" opciones={deTextos(FACTURACION_SISTEMA)} value={r.sistemaFacturacion} onChange={(v) => upd({ sistemaFacturacion: v })} />
+          </Campo>
+          <Campo label="Cuéntanos qué debería hacer (opcional)" htmlFor="c-sis" hint={`${r.sistemaDetalle.length}/400`}>
+            <textarea id="c-sis" className="nx-input nx-textarea" maxLength={400} rows={3} placeholder="Ej.: registrar los autos que entran al taller, sus repuestos y avisarle al cliente cuando esté listo." value={r.sistemaDetalle} onChange={(e) => upd({ sistemaDetalle: e.target.value })} />
+          </Campo>
+        </div>
+      );
+      break;
+
     case "negocio":
       contenido = (
         <div className="nx-cot-stack">
@@ -496,15 +531,21 @@ export function Cotizador() {
     case "contacto":
       contenido = (
         <div className="nx-cot-stack">
-          <Campo label="¿Para cuándo la necesitas?">
-            <GrupoOpciones label="Plazo" opciones={deTextos(PLAZOS)} value={r.plazo} onChange={(v) => upd({ plazo: v })} />
+          <Campo label={esSistema ? "¿Para cuándo lo necesitas?" : "¿Para cuándo la necesitas?"}>
+            <GrupoOpciones label="Plazo" opciones={deTextos(esSistema ? PLAZOS_SISTEMA : PLAZOS)} value={r.plazo} onChange={(v) => upd({ plazo: v })} />
           </Campo>
-          <Campo label="Presupuesto aproximado">
-            <GrupoOpciones label="Presupuesto" opciones={deTextos(PRESUPUESTOS)} value={r.presupuesto} onChange={(v) => upd({ presupuesto: v })} />
+          <Campo label="Presupuesto aproximado" hint={esSistema ? "Los sistemas parten desde US$ 1,000; puedes pagar en soles." : undefined}>
+            <GrupoOpciones label="Presupuesto" opciones={deTextos(esSistema ? PRESUPUESTOS_SISTEMA : PRESUPUESTOS)} value={r.presupuesto} onChange={(v) => upd({ presupuesto: v })} />
           </Campo>
-          <Campo label="¿Te interesa un plan de mantenimiento?">
-            <GrupoOpciones label="Mantenimiento" opciones={deTextos(MANTENIMIENTO)} value={r.mantenimiento} onChange={(v) => upd({ mantenimiento: v })} />
-          </Campo>
+          {esSistema ? (
+            <Campo label="¿Cómo prefieres pagar?">
+              <GrupoOpciones label="Forma de pago" opciones={deTextos(PAGO_SISTEMA)} value={r.formaPago} onChange={(v) => upd({ formaPago: v })} />
+            </Campo>
+          ) : (
+            <Campo label="¿Te interesa un plan de mantenimiento?">
+              <GrupoOpciones label="Mantenimiento" opciones={deTextos(MANTENIMIENTO)} value={r.mantenimiento} onChange={(v) => upd({ mantenimiento: v })} />
+            </Campo>
+          )}
           <div className="nx-cot-row">
             <Campo label="Tu nombre *" htmlFor="c-nombre">
               <input id="c-nombre" className="nx-input" autoComplete="name" placeholder="Nombre y apellido" value={r.nombre} onChange={(e) => upd({ nombre: e.target.value })} />
@@ -599,7 +640,7 @@ export function Cotizador() {
         <div className="nx-cot-main" ref={topRef}>
           <div className="nx-cot-intro">
             <p className="nx-eyebrow">Cotizador</p>
-            <h1>Arma la cotización de tu página web</h1>
+            <h1>{esSistema ? "Arma la cotización de tu sistema" : "Arma la cotización de tu página web"}</h1>
             <p>Responde a tu ritmo: tus respuestas se guardan en este dispositivo. Al final nos llega todo por WhatsApp.</p>
           </div>
 
@@ -674,7 +715,7 @@ export function Cotizador() {
         {esEscritorio && (
           <aside className="nx-cot-aside" aria-label="Vista previa de tu página">
             <div className="nx-cot-sticky">
-              <VistaPrevia r={rPrevia} onReorganizar={reorganizar} />
+              {esSistema ? <VistaSistema r={rPrevia} /> : <VistaPrevia r={rPrevia} onReorganizar={reorganizar} />}
             </div>
           </aside>
         )}
@@ -700,7 +741,7 @@ export function Cotizador() {
               <button type="button" className="nx-cot-sheet-close" onClick={() => setPreviewAbierta(false)} aria-label="Cerrar vista previa">
                 <X />
               </button>
-              <VistaPrevia r={rPrevia} onReorganizar={reorganizar} />
+              {esSistema ? <VistaSistema r={rPrevia} /> : <VistaPrevia r={rPrevia} onReorganizar={reorganizar} />}
             </motion.div>
           </motion.div>
         )}

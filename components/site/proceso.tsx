@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 
 const PASOS = [
   { titulo: "Nos cuentas tu negocio", texto: "Por WhatsApp, así de simple: qué vendes y qué necesitas." },
@@ -9,12 +9,28 @@ const PASOS = [
   { titulo: "La publicamos", texto: "Queda en línea y lista para recibir a tus clientes." },
 ];
 
-const ULTIMO = PASOS.length - 1;
 
 const puedeHover = () =>
   typeof window !== "undefined" && window.matchMedia("(hover: hover)").matches;
 
-export function Proceso() {
+type Paso = { titulo: string; texto: string };
+
+type Props = {
+  id?: string;
+  titulo?: string;
+  descripcion?: string;
+  pasos?: Paso[];
+  nota?: ReactNode;
+};
+
+export function Proceso({
+  id = "proceso",
+  titulo = "Cómo trabajamos",
+  descripcion = "Cuatro pasos, sin vueltas, desde que nos escribes hasta que tu página está en línea.",
+  pasos = PASOS,
+  nota,
+}: Props = {}) {
+  const ULTIMO = pasos.length - 1;
   // active: último paso iluminado. base: el anterior, para encadenar la animación.
   const [estado, setEstado] = useState({ active: -1, base: -1 });
   const listRef = useRef<HTMLOListElement>(null);
@@ -38,23 +54,23 @@ export function Proceso() {
     );
     observer.observe(el);
     return () => observer.disconnect();
-  }, []);
+  }, [ULTIMO]);
 
   return (
-    <section id="proceso" className="nx-section nx-section-alt">
+    <section id={id} className="nx-section nx-section-alt">
       <div className="nx-wrap">
         <div className="nx-section-head">
-          <h2>Cómo trabajamos</h2>
-          <p>Cuatro pasos, sin vueltas, desde que nos escribes hasta que tu página está en línea.</p>
+          <h2>{titulo}</h2>
+          <p>{descripcion}</p>
         </div>
 
         <ol
           ref={listRef}
           className="nx-flow"
-          style={{ "--base": estado.base } as CSSProperties}
+          style={{ "--base": estado.base, "--n": pasos.length } as CSSProperties}
           onMouseLeave={() => puedeHover() && iluminarHasta(-1)}
         >
-          {PASOS.map((paso, i) => {
+          {pasos.map((paso, i) => {
             const clases = [
               "nx-flow-step",
               i <= estado.active && "node-lit",
@@ -83,6 +99,8 @@ export function Proceso() {
             );
           })}
         </ol>
+
+        {nota && <p className="nx-flow-note">{nota}</p>}
       </div>
     </section>
   );

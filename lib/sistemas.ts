@@ -30,6 +30,8 @@ export type Sistema = {
   descripcion: string;
   incluye: string[];
   icono: LucideIcon;
+  ideal: string; // Para quién es (página /sistemas)
+  detalle: string[]; // Funciones en detalle (página /sistemas)
 };
 
 export const SISTEMAS: Sistema[] = [
@@ -40,6 +42,13 @@ export const SISTEMAS: Sistema[] = [
     descripcion: "Todos tus clientes, ventas y seguimientos en un solo lugar, sin perder ningún dato.",
     incluye: ["Ficha de cada cliente", "Historial de ventas", "Recordatorios de seguimiento"],
     icono: Users,
+    ideal: "Ideal para negocios que venden a clientes recurrentes y no quieren perder ninguna oportunidad.",
+    detalle: [
+      "Registro de clientes con sus datos y notas",
+      "Etapas de venta: interesado, cotizado, cerrado",
+      "Recordatorios para volver a contactar",
+      "Reportes de ventas por mes y por vendedor",
+    ],
   },
   {
     id: "intranet",
@@ -48,6 +57,13 @@ export const SISTEMAS: Sistema[] = [
     descripcion: "Un espacio privado para tu equipo, donde cada persona ve solo lo que le corresponde.",
     incluye: ["Usuarios con permisos", "Documentos ordenados", "Reportes del negocio"],
     icono: LayoutDashboard,
+    ideal: "Ideal para empresas con varias personas o sedes que necesitan trabajar ordenadas.",
+    detalle: [
+      "Usuarios y roles: cada uno ve lo suyo",
+      "Documentos y archivos en un solo lugar",
+      "Comunicados y avisos para el equipo",
+      "Reportes e indicadores del negocio",
+    ],
   },
   {
     id: "inventario",
@@ -56,6 +72,13 @@ export const SISTEMAS: Sistema[] = [
     descripcion: "Entradas, salidas y pedidos al día, con avisos cuando un producto se está acabando.",
     incluye: ["Stock en tiempo real", "Registro de pedidos", "Alertas de stock bajo"],
     icono: Boxes,
+    ideal: "Ideal para tiendas, ferreterías, distribuidoras y talleres con repuestos.",
+    detalle: [
+      "Ingresos y salidas de productos",
+      "Stock por almacén o local",
+      "Pedidos de clientes y a proveedores",
+      "Alertas cuando un producto se está acabando",
+    ],
   },
   {
     id: "citas",
@@ -64,6 +87,13 @@ export const SISTEMAS: Sistema[] = [
     descripcion: "Tus clientes reservan en los horarios libres y tú ves tu agenda ordenada.",
     incluye: ["Agenda por día y semana", "Reservas sin cruces", "Confirmación por WhatsApp"],
     icono: CalendarCheck,
+    ideal: "Ideal para clínicas, consultorios, salones, talleres y academias.",
+    detalle: [
+      "Agenda por profesional o por servicio",
+      "Reservas solo en horarios disponibles",
+      "Recordatorios y confirmación por WhatsApp",
+      "Historial de atenciones de cada cliente",
+    ],
   },
   {
     id: "portal",
@@ -72,6 +102,13 @@ export const SISTEMAS: Sistema[] = [
     descripcion: "Cada cliente entra con su usuario y consulta el estado de su pedido o servicio.",
     incluye: ["Acceso con usuario propio", "Estado de pedidos o servicios", "Historial y documentos"],
     icono: UserRoundSearch,
+    ideal: "Ideal para talleres, laboratorios, estudios y empresas de servicios.",
+    detalle: [
+      "Acceso con usuario y contraseña para cada cliente",
+      "Estado del pedido o servicio en tiempo real",
+      "Descarga de documentos y comprobantes",
+      "Menos mensajes preguntando \"¿cómo va lo mío?\"",
+    ],
   },
   {
     id: "ecommerce",
@@ -80,13 +117,87 @@ export const SISTEMAS: Sistema[] = [
     descripcion: "Un catálogo con carrito donde tus clientes eligen, piden y tú gestionas las ventas.",
     incluye: ["Catálogo con carrito", "Gestión de pedidos", "Panel para tus productos"],
     icono: ShoppingCart,
+    ideal: "Ideal para tiendas que venden por redes y quieren ordenar sus pedidos.",
+    detalle: [
+      "Catálogo con fotos, precios y stock",
+      "Carrito y pedido en línea",
+      "Panel para gestionar productos y pedidos",
+      "Integración con pagos o pedido por WhatsApp",
+    ],
   },
 ];
 
 // Mensaje de WhatsApp prellenado para cada sistema.
 export function mensajeSistema(sistema: Sistema) {
-  return `Hola ${BRAND_NAME}, me interesa un ${sistema.nombre.toLowerCase()} para mi negocio`;
+  return `Hola ${BRAND_NAME}, me interesa el sistema "${sistema.nombre}" para mi negocio`;
 }
+
+// Precios referenciales de sistemas (pago único). Mantén iguales los de lib/cotizador.ts.
+export const PRECIO_DESDE_SISTEMA = "US$ 1,000";
+
+export const PRECIOS_SISTEMAS = [
+  {
+    nombre: "Sistema básico",
+    precio: "Desde US$ 1,000",
+    nota: "Pago único por el desarrollo",
+    descripcion: "Para ordenar una sola área de tu negocio.",
+    incluye: [
+      "Un módulo principal (por ejemplo, CRM o inventario)",
+      "Usuarios con acceso y contraseña",
+      "Funciona en celular y computadora",
+      "Capacitación para tu equipo",
+      "30 días de garantía tras la entrega",
+    ],
+    destacado: false,
+  },
+  {
+    nombre: "Sistema completo",
+    precio: "US$ 1,500 – 2,000",
+    nota: "Según complejidad y volumen de datos",
+    descripcion: "Para negocios que necesitan varias áreas conectadas.",
+    incluye: [
+      "Todo lo del sistema básico",
+      "Varios módulos conectados entre sí",
+      "Roles y permisos por usuario",
+      "Reportes e indicadores",
+      "Integraciones (por ejemplo, facturación electrónica)",
+    ],
+    destacado: true,
+  },
+  {
+    nombre: "Proyecto a medida",
+    precio: "A cotizar",
+    nota: "Según el alcance del proyecto",
+    descripcion: "Para empresas con procesos propios o integraciones especiales.",
+    incluye: [
+      "Análisis de tus procesos",
+      "Desarrollo por etapas con avances visibles",
+      "Integraciones con otros sistemas",
+      "Migración de tus datos actuales",
+      "Plan de soporte a la medida",
+    ],
+    destacado: false,
+  },
+];
+
+// Condiciones de pago y costos que se muestran junto a los precios.
+export const CONDICIONES_SISTEMAS = [
+  "Pagas por etapas: 50% al iniciar y 50% al entregar.",
+  "El precio final depende de la complejidad del sistema y del volumen de datos de tu empresa.",
+  "Si el sistema necesita un plan pagado de alojamiento por su cantidad de usuarios o datos, te lo informamos antes y su costo lo asume tu negocio.",
+  "Después de la entrega, puedes contratar un plan de mantenimiento a la medida de tu sistema.",
+];
+
+// Cómo trabajamos un sistema (página /sistemas).
+export const PASOS_SISTEMA = [
+  { titulo: "Diagnóstico gratuito", texto: "Conversamos sobre cómo trabajas hoy y qué quieres resolver." },
+  { titulo: "Propuesta y prototipo", texto: "Te mostramos cómo se verá el sistema antes de construirlo." },
+  { titulo: "Desarrollo por etapas", texto: "Avanzamos por módulos y ves el progreso en cada entrega." },
+  { titulo: "Capacitación", texto: "Le enseñamos a tu equipo a usarlo desde el primer día." },
+  { titulo: "Soporte", texto: "Te acompañamos después de la entrega, con 30 días de garantía." },
+];
+
+export const TIEMPO_SISTEMA = "De 3 a 8 semanas según el alcance";
 
 // Rubros para que el visitante se reconozca rápido.
 export const RUBROS: { nombre: string; icono: LucideIcon }[] = [
@@ -134,6 +245,14 @@ export const SEGURIDAD: { titulo: string; texto: string; icono: LucideIcon }[] =
 
 // Preguntas frecuentes sobre sistemas (se usan en el inicio y en /preguntas-frecuentes).
 export const FAQ_SISTEMAS: { p: string; r: string }[] = [
+  {
+    p: "¿Cuánto cuesta un sistema a medida?",
+    r: "Un sistema básico parte desde US$ 1,000, y uno más completo, con varios módulos y más datos, suele estar entre US$ 1,500 y US$ 2,000. El precio final depende de la complejidad y lo verás en la cotización por escrito. Puedes pagar en soles al tipo de cambio del día.",
+  },
+  {
+    p: "¿Cuánto demora en estar listo?",
+    r: "Entre 3 y 8 semanas según el alcance. Trabajamos por etapas, así que vas viendo avances desde las primeras semanas.",
+  },
   {
     p: "¿Los datos de mi negocio son míos?",
     r: "Sí, siempre. La información que registras en tu sistema es de tu negocio y puedes pedirnos una copia completa cuando lo necesites.",
