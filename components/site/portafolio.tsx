@@ -1,5 +1,9 @@
 import type { CSSProperties } from "react";
+import Image from "next/image";
 import { GlowCard } from "@/components/ui/spotlight-card";
+
+// Sitio publicado de Mi Mecánico (proyecto de cliente)
+const MI_MECANICO_URL = "https://mimecaino.vercel.app/";
 
 // Variante del efecto de luz para el portafolio: tono cian, luz más amplia
 // y un interior más iluminado. Las tarjetas "Próximamente" llevan borde punteado.
@@ -22,8 +26,8 @@ export function Portafolio() {
         <div className="nx-section-head">
           <h2>Nuestro portafolio</h2>
           <p>
-            Este es nuestro primer proyecto. A partir de aquí iremos sumando cada página que
-            construyamos.
+            Proyectos reales, publicados y funcionando. Cada página que construyamos se sumará
+            a esta lista.
           </p>
         </div>
 
@@ -37,15 +41,36 @@ export function Portafolio() {
             </a>
           </GlowCard>
 
-          <GlowCard
-            customSize
-            glowColor="cian"
-            className="nx-pack nx-work nx-work-soon"
-            style={ESTILO_PROXIMAMENTE}
-          >
-            <div className="nx-tag nx-tag-muted">Proyecto 02</div>
-            <h3>Próximamente</h3>
-            <p>Estamos trabajando en el siguiente proyecto. Vuelve pronto para verlo aquí.</p>
+          <GlowCard customSize glowColor="cian" className="nx-pack nx-work nx-work-client" style={ESTILO_BASE}>
+            <a
+              href={MI_MECANICO_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="nx-work-cover"
+              aria-label="Abrir el sitio de Mi Mecánico en una pestaña nueva"
+            >
+              <Image
+                src="/portafolio/mi-mecanico.jpg"
+                alt="Portada del sitio de Mi Mecánico: tu mecánico llega a donde estés"
+                width={1200}
+                height={630}
+                sizes="(max-width: 720px) 100vw, 360px"
+              />
+              <span className="nx-work-scan" aria-hidden="true" />
+              <span className="nx-work-live">
+                <span className="nx-work-live-dot" aria-hidden="true" />
+                En línea
+              </span>
+            </a>
+            <div className="nx-tag nx-tag-cyan">Proyecto 02 · Cliente</div>
+            <h3>Mi Mecánico</h3>
+            <p>
+              Servicio automotriz multimarca a domicilio o en taller en Lima. Página rápida con
+              pedido por WhatsApp, preguntas frecuentes y formulario de servicio.
+            </p>
+            <a href={MI_MECANICO_URL} target="_blank" rel="noopener noreferrer" className="nx-work-link">
+              Visitar el sitio <span aria-hidden="true">↗</span>
+            </a>
           </GlowCard>
 
           <GlowCard
