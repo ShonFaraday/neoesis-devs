@@ -3,7 +3,7 @@ import Image from "next/image";
 import { GlowCard } from "@/components/ui/spotlight-card";
 
 // Sitio publicado de Mi Mecánico (proyecto de cliente)
-const MI_MECANICO_URL = "https://mimecaino.vercel.app/";
+const MI_MECANICO_URL = "https://mimecanicoo.vercel.app/";
 
 // Variante del efecto de luz para el portafolio: tono cian, luz más amplia
 // y un interior más iluminado. Las tarjetas "Próximamente" llevan borde punteado.
